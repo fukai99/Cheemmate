@@ -1,57 +1,34 @@
 Rails.application.routes.draw do
-  namespace :public do
-    get 'homes/top'
+
+  devise_for :admins, path: "admin/admins",
+  skip: [:registrations, :passwords],
+  controllers: {
+    sessions: "admin/admins/sessions"
+  }
+
+  # 管理者とユーザーで区別
+  devise_for :users, controllers: {
+    sessions: "public/users/sessions",
+    passwords: 'public/users/passwords',
+    registrations: 'public/users/registrations',
+  }
+  
+  scope module: :public do
+    root to: 'homes#top'
+    resources :comments, only: [:create, :destroy]
+    resources :bookmarks, only: [:index, :create, :destroy]
+    resources :users, only: [:show, :edit, :update, :withdrawal]
+    resources :posts, only: [:index, :update, :new, :destroy, :edit]
   end
-  namespace :public do
-    get 'comments/create'
-    get 'comments/destroy'
-  end
-  namespace :public do
-    get 'bookmarks/create'
-    get 'bookmarks/destroy'
-    get 'bookmarks/index'
-  end
-  namespace :public do
-    get 'users/show'
-    get 'users/edit'
-    get 'users/update'
-    get 'users/withdrawal'
-  end
-  namespace :public do
-    get 'posts/index'
-    get 'posts/new'
-    get 'posts/edit'
-    get 'posts/update'
-    get 'posts/destroy'
-  end
+
   namespace :admin do
     get 'comments/destroy'
-  end
-  namespace :admin do
-    get 'posts/show'
-    get 'posts/index'
-    get 'posts/destroy'
-  end
-  namespace :admin do
-    get 'users/show'
-    get 'users/edit'
-    get 'users/update'
-  end
-  namespace :admin do
-    get 'genres/index'
-    get 'genres/create'
-    get 'genres/edit'
-    get 'genres/update'
-    get 'genres/destroy'
-  end
-  namespace :admin do
+    resources :posts, only: [:index, :show, :destroy]
+    resources :users, only: [:show, :edit, :update]
+    resources :genres, only: [:index, :update, :create, :destroy, :edit]
+
     get 'homes/top'
   end
-  devise_for :bookmarks
-  devise_for :comments
-  devise_for :genres
-  devise_for :posts
-  devise_for :admins
-  devise_for :users
+
   # For details on the DSL available within this file, see https://guides.rubyonrails.org/routing.html
 end

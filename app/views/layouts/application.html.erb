@@ -9,8 +9,66 @@
     <%= stylesheet_link_tag 'application', media: 'all', 'data-turbolinks-track': 'reload' %>
     <%= javascript_pack_tag 'application', 'data-turbolinks-track': 'reload' %>
   </head>
+  <style>
+ a {
+    color: black;
+    text-decoration: underline;
+  }
+  .custom-header {
+    background-color: blue;
+    }
+  </style>
 
   <body>
+    <nav class="navbar navbar-expand-lg navbar-dark custom-header">
+   <a class="navbar-brand" href="/">
+    </a>
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse" id="navbarNav">
+      <ul class="navbar-nav nav-item nav-link ml-auto">
+        <% if user_signed_in? %>
+        <p class="navbar-text mx-auto pr-5 text-break font-weight-bold" >ようこそ、<%= current_user.family_name %> さん！</p>
+        <li class="nav-item">
+          <%= link_to "マイページ", user_path(current_user), method: :get%>
+        </li>
+        <li class="nav-item">
+          <%= link_to "ブックマーク一覧", bookmarks_path, method: :get%>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link custom-text-color" href="/posts/new">新規投稿</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link " href="/users/sign_out" data-method="delete">ログアウト</a>
+        </li>
+
+        <% elsif admin_signed_in? %>
+          <!-- 管理者ログイン時のメニュー -->
+          <li class="nav-item">
+            <a class="nav-link" href="/admin/genres">ジャンル一覧</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="/admin/users">会員一覧</a>
+          </li>
+          <li class="nav-item">
+            <%= link_to 'ログアウト', destroy_admin_session_path, method: :delete, class: 'nav-link' %>
+          </li>
+        <% else %>
+          <li class="nav-item">
+            <a class="nav-link" href="/user/sign_up">新規登録</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="/user/sign_in">ログイン</a>
+          </li>
+
+        <% if admin_signed_in? %>
+          <%= link_to '管理者ログアウト', destroy_admin_session_path, method: :delete, class: 'btn btn-danger' %>
+        <% end %>
+        <% end %>
+      </ul>
+    </div>
+  </nav>
     <%= yield %>
   </body>
 </html>
