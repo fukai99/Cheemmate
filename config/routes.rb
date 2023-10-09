@@ -17,7 +17,9 @@ Rails.application.routes.draw do
     root to: 'homes#top'
     resources :comments, only: [:create, :destroy]
     resources :bookmarks, only: [:index, :create, :destroy]
-    resources :users, only: [:show, :edit, :update, :withdrawal]
+    resources :users, only: [:show, :edit, :update,]
+    
+    
     resources :posts, only: [:index, :update, :new, :destroy, :edit, :create]
   end
 
@@ -25,6 +27,7 @@ Rails.application.routes.draw do
     get 'comments/destroy'
     resources :posts, only: [:index, :show, :destroy]
     resources :users, only: [:show, :edit, :update,]
+    patch '/users/:id/withdrawal' => 'users#withdrawal', as: 'withdrawal'
     resources :genres, only: [:index, :update, :create, :destroy, :edit]
 
     get 'homes/top'

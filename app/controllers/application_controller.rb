@@ -8,7 +8,7 @@ class ApplicationController < ActionController::Base
   def after_sign_in_path_for(resource)
     case resource
     when User
-      posts_path
+      user_path(current_user)
     when Admin
       admin_homes_top_path
     end
@@ -24,7 +24,7 @@ class ApplicationController < ActionController::Base
   end
 
   def configure_permitted_parameters
-    devise_parameter_sanitizer.permit(:sign_up, keys: [:family_name, :first_name, :family_relationship, :disply_name])
+    devise_parameter_sanitizer.permit(:sign_up, keys: [:family_name, :first_name, :family_relationship, :disply_name, :is_member])
   end
 
 end

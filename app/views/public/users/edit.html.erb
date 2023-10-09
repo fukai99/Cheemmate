@@ -17,6 +17,12 @@
     <%= f.file_field :avatar %>
     <%#= f.file_field :image, multiple: true, accept: "image/*" %>
   </div>
+  
+  <p>本人か</p>
+  <%= f.radio_button :is_member, true %>
+  <%= f.label :is_member, "生徒" %>
+  <%= f.radio_button :is_member, false%>
+  <%= f.label :is_member, "家族" %>
  
   <%= f.submit "編集" %>
 <% end %>

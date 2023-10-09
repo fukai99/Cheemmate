@@ -1,18 +1,23 @@
 class Public::PostsController < ApplicationController
-  
+  before_action :authenticate_user!
 
   def new
      @post = Post.new
   end
 
   def create
-    post = Post.new(post_params)
-    url = params[:post][:youtube_url]
-    url = url.last(11)
-    post.youtube_url = url
-    post.user_id = current_user.id
-    post.save
-    redirect_to user_path
+    @post = current_user.posts.new(post_params)
+    # 改行コード込みで送られてくるので改行コードで分割して文字列の配列にする
+    youtube_urls = params[:youtube_url].split(/\R/)
+    youtube_urls.each do |url|
+      @post.youtube_urls.new(path: url.last(11))
+    end
+
+    if @post.save
+      redirect_to user_path(current_user)
+    else
+      render :new
+    end
   end
 
   def edit
@@ -33,15 +38,16 @@ class Public::PostsController < ApplicationController
   def destroy
     post = Post.find(params[:id])
     post.destroy
-    redirect_to user_path
+    redirect_to user_path(current_user)
   end
 
   def index
-    @posts = Post.all
+    @posts = Post.order(created_at: :desc)
   end
 
   private
+
   def post_params
-    params.require(:post).permit(:content, images: [])  
+    params.require(:post).permit(:content, :genre_id, images: [])
   end
 end

@@ -12,4 +12,10 @@ class User < ApplicationRecord
   has_many :bookmark_posts, through: :bookmarks, source: :post
   
   has_one_attached :avatar
+  validates :is_member, inclusion: { in: [true, false] }
+  
+  def active_for_authentication?
+    super && (is_deleted == false)
+  end
+  
 end

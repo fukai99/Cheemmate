@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2023_10_08_094923) do
+ActiveRecord::Schema.define(version: 2023_10_09_112549) do
 
   create_table "active_storage_attachments", force: :cascade do |t|
     t.string "name", null: false
@@ -79,22 +79,13 @@ ActiveRecord::Schema.define(version: 2023_10_08_094923) do
     t.datetime "updated_at", precision: 6, null: false
   end
 
-  create_table "post_genres", force: :cascade do |t|
-    t.integer "genre_id", null: false
-    t.integer "post_id", null: false
-    t.datetime "created_at", precision: 6, null: false
-    t.datetime "updated_at", precision: 6, null: false
-    t.index ["genre_id", "post_id"], name: "index_post_genres_on_genre_id_and_post_id", unique: true
-    t.index ["genre_id"], name: "index_post_genres_on_genre_id"
-    t.index ["post_id"], name: "index_post_genres_on_post_id"
-  end
-
   create_table "posts", force: :cascade do |t|
     t.string "content"
     t.integer "user_id", null: false
+    t.integer "genre_id", null: false
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
-    t.string "youtube_url"
+    t.index ["genre_id"], name: "index_posts_on_genre_id"
     t.index ["user_id"], name: "index_posts_on_user_id"
   end
 
@@ -109,10 +100,19 @@ ActiveRecord::Schema.define(version: 2023_10_08_094923) do
     t.string "reset_password_token"
     t.datetime "reset_password_sent_at"
     t.datetime "remember_created_at"
+    t.boolean "is_deleted", default: false, null: false
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
     t.index ["email"], name: "index_users_on_email", unique: true
     t.index ["reset_password_token"], name: "index_users_on_reset_password_token", unique: true
+  end
+
+  create_table "youtube_urls", force: :cascade do |t|
+    t.string "path", null: false
+    t.integer "post_id", null: false
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["post_id"], name: "index_youtube_urls_on_post_id"
   end
 
   add_foreign_key "active_storage_attachments", "active_storage_blobs", column: "blob_id"
@@ -121,7 +121,7 @@ ActiveRecord::Schema.define(version: 2023_10_08_094923) do
   add_foreign_key "bookmarks", "users"
   add_foreign_key "comments", "posts"
   add_foreign_key "comments", "users"
-  add_foreign_key "post_genres", "genres"
-  add_foreign_key "post_genres", "posts"
+  add_foreign_key "posts", "genres"
   add_foreign_key "posts", "users"
+  add_foreign_key "youtube_urls", "posts"
 end

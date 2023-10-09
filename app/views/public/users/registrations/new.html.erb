@@ -20,6 +20,18 @@
   </div>
   
   <div class="field">
+    <%= f.label :is_member %><br />
+    <label>
+      <%= f.radio_button :is_member, true, autofocus: true, autocomplete: "is_member_true" %>
+      生徒
+    </label>
+    <label>
+      <%= f.radio_button :is_member, false, autofocus: true, autocomplete: "is_member_false" %>
+      家族
+    </label>
+  </div>
+
+  <div class="field">
     <%= f.label :family_relationship %><br />
     <%= f.text_field :family_relationship, autofocus: true, autocomplete: "family_relationship" %>
   </div>

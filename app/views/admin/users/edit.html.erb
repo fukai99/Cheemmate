@@ -1,2 +1,22 @@
-<h1>Admin::Users#edit</h1>
-<p>Find me in app/views/admin/users/edit.html.erb</p>
+
+
+<%= form_with model: @user, url: admin_user_path(@user.id), method: :patch, local: true do |f| %>
+
+  <p>名前</p>
+  <%= f.text_field :family_name %> <%= f.text_field :first_name %>
+  <p>表示名</p>
+
+  <%= f.text_field :disply_name %>
+
+  <p>属柄等</p>
+  <%= f.text_field :family_relationship %>
+
+  <p>本人か</p>
+  <%= f.radio_button :is_member, true %>
+  <%= f.label :is_member, "生徒" %>
+  <%= f.radio_button :is_member, false%>
+  <%= f.label :is_member, "家族" %>
+
+  <%= f.submit "変更を保存" %>
+
+<% end %>

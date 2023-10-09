@@ -1,19 +1,33 @@
-<%#= render 'user/show', user: @user %>
+<%#= render partial: 'user_info', locals: { user: user } %>
 <h1>投稿一覧</h1>
-
 <% @posts.each do |post| %>
-  <%= post.content %><br>
+
+  <p>投稿日時: <%= post.created_at.strftime("%Y-%m-%d %H:%M:%S") %></p>
+
+  <% if post.user.avatar.attached? %>
+    <%= image_tag post.user.avatar, size: "70x70" %>
+  <% end %>
+
+  <p>ユーザーネーム<%= link_to post.user.disply_name, user_path(post.user) %></p>
+  <p>ジャンル名:
+  <% post.genres.each do |genre| %>
+    <%= genre.name %>
+  <% end %>
+</p>
   
+
+  <p>コメント<%= post.content %></p><br>
+
   <% if post.images.attached? %>
     <% post.images.each do |image| %>
-      <%= image_tag image, size: "200x200" %>
+      <%= image_tag image, size: "150x150" %>
     <% end %>
   <% end %><br>
-  
-  <iframe width="560" height="315" src="https://www.youtube.com/embed/<%= post.youtube_url %>" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe><br>
 
-<% if current_user == post.user %>
+  <iframe width="224" height="126" src="https://www.youtube.com/embed/<%= post.youtube_url %>" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe><br>
+
+  <% if current_user == post.user %>
     <%= link_to "編集", edit_post_path(post) %>
     <%= link_to "削除", post_path(post), method: :delete, data: { confirm: "削除しますか？" } %>
   <% end %><br>
-  <% end %>
+<% end %>
