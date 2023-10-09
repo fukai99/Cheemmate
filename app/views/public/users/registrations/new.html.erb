@@ -2,7 +2,28 @@
 
 <%= form_for(resource, as: resource_name, url: registration_path(resource_name)) do |f| %>
   <%= render "public/users/shared/error_messages", resource: resource %>
-
+  
+  
+  <div class="field">
+    <%= f.label :family_name %><br />
+    <%= f.text_field :family_name, autofocus: true, autocomplete: "family_name" %>
+  </div>
+  
+  <div class="field">
+    <%= f.label :first_name %><br />
+    <%= f.text_field :first_name, autofocus: true, autocomplete: "first_name" %>
+  </div>
+  
+  <div class="field">
+    <%= f.label :disply_name %><br />
+    <%= f.text_field :disply_name, autofocus: true, autocomplete: "disply_name" %>
+  </div>
+  
+  <div class="field">
+    <%= f.label :family_relationship %><br />
+    <%= f.text_field :family_relationship, autofocus: true, autocomplete: "family_relationship" %>
+  </div>
+  
   <div class="field">
     <%= f.label :email %><br />
     <%= f.email_field :email, autofocus: true, autocomplete: "email" %>
@@ -17,7 +38,7 @@
   </div>
 
   <div class="field">
-    <%= f.label :password_confirmation %><br />
+    <%= f.label :password_confirmation %><br>
     <%= f.password_field :password_confirmation, autocomplete: "new-password" %>
   </div>
 

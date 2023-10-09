@@ -1,2 +1,28 @@
-<h1>Public::Users#edit</h1>
-<p>Find me in app/views/public/users/edit.html.erb</p>
+
+  
+ 
+  <%= form_with model: @user do |f| %>
+  <div class="field">
+    <%= f.label :disply_name %><br/>
+    <%= f.text_field :disply_name, autofocus: true, autocomplete: "disply_name" %>
+  </div>
+  
+  <div class="field">
+    <%= f.label :family_relationship %><br/>
+    <%= f.text_field :family_relationship, autofocus: true, autocomplete: "family_relationship" %>
+  </div>
+  
+  <div class="field">
+    <%= f.label :アイコン画像 %><br/>
+    <%= f.file_field :avatar %>
+    <%#= f.file_field :image, multiple: true, accept: "image/*" %>
+  </div>
+ 
+  <%= f.submit "編集" %>
+<% end %>
+  
+  
+
+  
+
+  

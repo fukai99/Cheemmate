@@ -1,2 +1,23 @@
-<h1>Public::Users#show</h1>
-<p>Find me in app/views/public/users/show.html.erb</p>
+<h1>My page</h1>
+
+<% if @posts.any? %>
+  <% @posts.each do |post| %>
+    <%= post.content %><br>
+    <% if post.images.attached? %>
+      <% post.images.each do |image| %>
+        <%= image_tag image, size: "200x200" %>
+      <% end %><br>
+    <% end %>
+    <iframe width="560" height="315" src="https://www.youtube.com/embed/<%= post.youtube_url %>" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe><br>
+    <%= link_to "編集", edit_post_path(post.id) %>
+    <%= link_to "削除", post_path(post.id), method: :delete %><br>
+  <% end %>
+<% else %>
+  <h4>投稿がありません。<br>
+  投稿してみましょう！<br>
+  <%= link_to "投稿はこちらから", new_post_path %></h4>
+<% end %>
+
+
+
+

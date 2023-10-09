@@ -18,13 +18,13 @@ Rails.application.routes.draw do
     resources :comments, only: [:create, :destroy]
     resources :bookmarks, only: [:index, :create, :destroy]
     resources :users, only: [:show, :edit, :update, :withdrawal]
-    resources :posts, only: [:index, :update, :new, :destroy, :edit]
+    resources :posts, only: [:index, :update, :new, :destroy, :edit, :create]
   end
 
   namespace :admin do
     get 'comments/destroy'
     resources :posts, only: [:index, :show, :destroy]
-    resources :users, only: [:show, :edit, :update]
+    resources :users, only: [:show, :edit, :update,]
     resources :genres, only: [:index, :update, :create, :destroy, :edit]
 
     get 'homes/top'
