@@ -8,6 +8,7 @@
 
     <%= stylesheet_link_tag 'application', media: 'all', 'data-turbolinks-track': 'reload' %>
     <%= javascript_pack_tag 'application', 'data-turbolinks-track': 'reload' %>
+    
   </head>
   <style>
  a {
@@ -35,7 +36,7 @@
           <%= link_to "マイページ", user_path(current_user), method: :get %>
         </li>
         <li class="nav-item">
-          <%= link_to "ブックマーク一覧", bookmarks_path, method: :get %>
+          <%= link_to "ブックマーク一覧", user_bookmarks_path(current_user) %>
         </li>
         <li class="nav-item">
           <%= link_to "新規投稿", new_post_path, method: :get %>
@@ -67,7 +68,7 @@
       </ul>
     </div>
   </nav>
-  
+
   <%= flash[:notice] %>
     <%= yield %>
   </body>

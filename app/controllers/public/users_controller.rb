@@ -1,7 +1,7 @@
 class Public::UsersController < ApplicationController
 
-  def show
 
+  def show
     @user = User.find(params[:id])
     @posts = @user.posts.order(created_at: :desc)
   end
@@ -19,9 +19,6 @@ class Public::UsersController < ApplicationController
     else
       render :edit
     end
-  end
-
-  def withdrawal
   end
 
   private

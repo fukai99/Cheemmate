@@ -1,25 +1,40 @@
+<h4><%= link_to @user.disply_name %>さんの投稿一覧</h4>
 
-<%= link_to "ユーザー編集", edit_user_path(@user.id) %>
+<% if current_user == @user %>
+  <%= link_to "ユーザー編集", edit_user_path(@user.id) %>
+<% end %>
+
 <% if @user.avatar.attached? %>
    <%= image_tag @user.avatar, size: "70x70" %>
- <% end %>
+<% end %>
+<p>ユーザーネーム<%= link_to @user.disply_name %></p>
+<% if @user.family_relationship.present? %>
+  <p>属柄:<%= @user.family_relationship %></p>
+<% end %>
 
 <% if @posts.any? %>
   <% @posts.each do |post| %>
     <p>投稿日時: <%= post.created_at.strftime("%Y-%m-%d %H:%M:%S") %></p>
     <p>ジャンル名:<%= post.genre.name %></p>
-
     <%= post.content %><br>
+
     <% if post.images.attached? %>
       <% post.images.each do |image| %>
         <%= image_tag image, size: "150x150" %>
-      <% end %><br>
-    <% end %>
+      <% end %>
+    <% end %><br>
+
+
+
     <% post.youtube_urls.each do |youtube_url| %>
       <iframe width="224" height="126" src="https://www.youtube.com/embed/<%= youtube_url.path %>" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe><br>
     <% end %>
-    <%= link_to "編集", edit_post_path(post) %>
-    <%= link_to "削除", post_path(post), method: :delete %><br>
+
+    <% if current_user == post.user %>
+      <%= link_to "編集", edit_post_path(post) %>
+      <%= link_to "削除", post_path(post), method: :delete %><br>
+    <% end %>
+    
   <% end %>
 <% else %>
   <h4>投稿がありません。<br>

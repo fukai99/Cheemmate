@@ -1,0 +1,48 @@
+<h4><%= @post.user.disply_name %>さんの投稿</h4>
+
+<p>投稿日時: <%= @post.created_at.strftime("%Y-%m-%d %H:%M:%S") %></p>
+
+  <% if @post.user.avatar.attached? %>
+    <%= image_tag @post.user.avatar, size: "70x70" %>
+  <% end %>
+
+  <p>ユーザーネーム<%= link_to @post.user.disply_name, user_path(@post.user) %></p>
+  <% if post.user.family_relationship.attached? %>
+    <p>属柄:<%= @post.family_relationship %></p>
+  <% end %>
+  <p>ジャンル名:<%= @post.genre.name %></p>
+  
+
+  <p>コメント<%= @post.content %></p><br>
+
+  <% if @post.images.attached? %>
+    <% @post.images.each do |image| %>
+      <%= image_tag image, size: "150x150" %>
+    <% end %>
+  <% end %><br>
+
+  <% if @post.youtube_urls.attached? %>
+    <% @post.youtube_urls.each do |youtube_url| %>
+        <iframe width="224" height="126" src="https://www.youtube.com/embed/<%= youtube_url.path %>" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe><br>
+    <% end %>
+  <% end %>
+    
+  <% if current_user == @post.user %>
+    <%= link_to "編集", edit_post_path(@post) %>
+    <%= link_to "削除", post_path(@post), method: :delete, data: { confirm: "削除しますか？" } %>
+  <% end %><br>
+
+<div>
+  <p>コメント件数：<%= @post.comments.count %></p>
+  <% @post.comments.each do |comment| %>
+    <p><%#= image_tag comment.user.get_profile_image(100,100) %></p>
+    <%= comment.user.disply_name %>
+    <%= comment.created_at.strftime('%Y/%m/%d') %><%= comment.comment %>
+  <% end %>
+</div>
+<div>
+  <%= form_with model: [@post, @comment] do |f| %>
+    <%= f.text_area :content, rows: '5', placeholder: "コメントをここに" %>
+    <%= f.submit "送信する" %>
+  <% end %>
+</div>

@@ -6,19 +6,24 @@ class Public::PostsController < ApplicationController
   end
 
   def create
-    @post = current_user.posts.new(post_params)
-    # 改行コード込みで送られてくるので改行コードで分割して文字列の配列にする
-    youtube_urls = params[:youtube_url].split(/\R/)
-    youtube_urls.each do |url|
-      @post.youtube_urls.new(path: url.last(11))
-    end
+  @post = current_user.posts.new(post_params)
+  # 改行コード込みで送られてくるので改行コードで分割して文字列の配列にする
+  youtube_urls = params[:youtube_url].split(/\R/)
+  youtube_urls.each do |url|
+    @post.youtube_urls.new(path: url.last(11))
+  end
 
+  # 画像か動画のどちらかが添付されている
+  if @post.images.attached? || @post.youtube_urls.any?
     if @post.save
-      redirect_to user_path(current_user)
+      redirect_to user_path(current_user), notice: "投稿が保存されました。"
     else
       render :new
     end
+  else
+    render :new
   end
+end
 
   def edit
     @post = Post.find(params[:id])
@@ -43,6 +48,11 @@ class Public::PostsController < ApplicationController
 
   def index
     @posts = Post.order(created_at: :desc)
+  end
+  
+  def show
+    @post = Post.find(params[:id])
+    @comment = Comment.new
   end
 
   private

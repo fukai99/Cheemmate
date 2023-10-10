@@ -5,6 +5,12 @@
 
 	<h4>画像</h4>
   <%= f.file_field :images, multiple: true, accept: "image/*" %>
+  
+  <% if @post.images.attached? %>
+    <% @post.images.each do |image| %>
+      <%= image_tag image, size: "150x150" %>
+    <% end %>
+  <% end %><br>
 
   <h4>Youtube url</h4>
   <%= f.text_field :youtube_url%>
