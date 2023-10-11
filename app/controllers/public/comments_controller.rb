@@ -15,11 +15,11 @@ class Public::CommentsController < ApplicationController
 
   def destroy
   end
-  
+
   private
 
   def post_comment_params
     params.require(:comment).permit(:content)
   end
-  
+
 end

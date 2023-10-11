@@ -1,12 +1,14 @@
 <h4><%= link_to @user.disply_name %>さんの投稿一覧</h4>
-
+<%= image_tag @user.get_avatar(70,70) %><br>
+<%= @user.disply_name %> 
+<%= @user.is_member ? '生徒' : '家族' %>
 <% if current_user == @user %>
   <%= link_to "ユーザー編集", edit_user_path(@user.id) %>
-<% end %>
+<% end %><br>
 
-<% if @user.avatar.attached? %>
-   <%= image_tag @user.avatar, size: "70x70" %>
-<% end %>
+
+   <%= image_tag @user.get_avatar(70,70)%>
+   
 <p>ユーザーネーム<%= link_to @user.disply_name %></p>
 
 <p>属柄:<%= @user.family_relationship %></p>

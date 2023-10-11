@@ -4,9 +4,9 @@
 
   <p>投稿日時: <%= post.created_at.strftime("%Y-%m-%d %H:%M:%S") %></p>
 
-  <% if post.user.avatar.attached? %>
-    <%= image_tag post.user.avatar, size: "70x70" %>
-  <% end %>
+  
+    <%= image_tag post.user.get_avatar(70,70) %>
+  
 
   <p>ユーザーネーム<%= link_to post.user.disply_name, user_path(post.user) %></p>
   

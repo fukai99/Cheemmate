@@ -1,10 +1,2 @@
-<%= user.disply_name %> 
-<%= user.family_relationship %> 
-<% if user.avatar.attached? %>
-  <%= image_tag user.avatar, size: "100x100" %>
-<% else %>
-  <p>アバター写真がありません。</p>
-<% end %>
-<%= link_to "編集", edit_user_path(user.id) %><br>
 
 
