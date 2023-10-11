@@ -8,9 +8,9 @@
    <%= image_tag @user.avatar, size: "70x70" %>
 <% end %>
 <p>ユーザーネーム<%= link_to @user.disply_name %></p>
-<% if @user.family_relationship.present? %>
-  <p>属柄:<%= @user.family_relationship %></p>
-<% end %>
+
+<p>属柄:<%= @user.family_relationship %></p>
+
 
 <% if @posts.any? %>
   <% @posts.each do |post| %>
@@ -34,7 +34,7 @@
       <%= link_to "編集", edit_post_path(post) %>
       <%= link_to "削除", post_path(post), method: :delete %><br>
     <% end %>
-    
+
   <% end %>
 <% else %>
   <h4>投稿がありません。<br>

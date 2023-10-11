@@ -94,7 +94,7 @@ ActiveRecord::Schema.define(version: 2023_10_09_112549) do
     t.string "first_name", null: false
     t.boolean "is_member", null: false
     t.string "disply_name", null: false
-    t.string "family_relationship"
+    t.string "family_relationship", null: false
     t.string "email", default: "", null: false
     t.string "encrypted_password", default: "", null: false
     t.string "reset_password_token"

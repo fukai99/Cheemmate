@@ -1,10 +1,16 @@
 class Public::CommentsController < ApplicationController
   def create
     post = Post.find(params[:post_id])
-    comment = current_user.post_comments.new(post_comment_params)
-    comment.post_id = post.id
-    comment.save
-    redirect_to post_path(post)
+    comment = Comment.new(post_comment_params)
+    comment.user = current_user
+    comment.post = post
+    if comment.save
+      redirect_to post_path(post), notice: "コメントが投稿されました"
+    else
+      flash[:error] = "コメントを投稿できませんでした"
+      # エラーハンドリングのコード
+      redirect_back(fallback_location: post_path(post))
+    end
   end
 
   def destroy

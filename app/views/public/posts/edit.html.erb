@@ -1,23 +1,34 @@
 <%= form_with model: @post, url: post_path(@post), method: :patch do |f| %>
 
    <h4>コメント</h4>
-  <%= f.text_area :content %>
+  <%= f.text_area :content, rows: 2, style: "width: 30%;" %>
 
 	<h4>画像</h4>
   <%= f.file_field :images, multiple: true, accept: "image/*" %>
-  
+
   <% if @post.images.attached? %>
     <% @post.images.each do |image| %>
       <%= image_tag image, size: "150x150" %>
     <% end %>
   <% end %><br>
 
-  <h4>Youtube url</h4>
-  <%= f.text_field :youtube_url%>
+  
+  
+  <h4>Youtube URL(※複数の動画をつけたい場合は改行して入力してください)</h4>
+  <% @post.youtube_urls.each do |youtube_url| %>
+      <iframe width="224" height="126" src="https://www.youtube.com/embed/<%= youtube_url.path %>" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe><br>
+  <% end %>
+
+  <%= f.fields_for :youtube_urls, @post.youtube_urls.build do |ff| %>
+
+    <%= ff.text_area :path, rows: 5, style: "width: 30%;" %>
+
+  <% end %>
+
 
   <h4>ジャンル</h4>
   <%= f.label :genre_id, 'ジャンル' %>
-    <%= f.collection_select :genre_id, Genre.all, :id, :name, { prompt: '--選択してください--' } %>
+  <%= f.collection_select :genre_id, Genre.all, :id, :name, { prompt: '--選択してください--' } %>
 
   <%= f.submit '変更を保存' %>
 <% end %>

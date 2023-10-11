@@ -9,9 +9,9 @@
   <% end %>
 
   <p>ユーザーネーム<%= link_to post.user.disply_name, user_path(post.user) %></p>
-  <% if post.user.family_relationship.present? %>
+  
   <p>属柄:<%= post.user.family_relationship %></p>
-<% end %>
+
   
   <p>ジャンル名:<%= post.genre.name %></p>
 
@@ -27,6 +27,8 @@
   <% post.youtube_urls.each do |youtube_url| %>
       <iframe width="224" height="126" src="https://www.youtube.com/embed/<%= youtube_url.path %>" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe><br>
     <% end %>
+    
+  <p>コメント件数：<%= link_to post.comments.count, post_path(post.id) %></p>
 
   <% if current_user == post.user %>
     <%= link_to "編集", edit_post_path(post) %>

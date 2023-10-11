@@ -16,7 +16,7 @@ class Public::PostsController < ApplicationController
   # 画像か動画のどちらかが添付されている
   if @post.images.attached? || @post.youtube_urls.any?
     if @post.save
-      redirect_to user_path(current_user), notice: "投稿が保存されました。"
+      redirect_to user_path(@post.user), notice: "投稿が保存されました。"
     else
       render :new
     end
@@ -31,9 +31,11 @@ end
 
   def update
     @post = Post.find(params[:id])
-    if @post.update(post_params)
-       flash[:notice] = "変更しました。"
-       redirect_to user_path
+    post_p = post_params
+    post_p[:youtube_urls_attributes]["0"][:path] = post_p[:youtube_urls_attributes]["0"][:path].last(11)
+    if @post.update(post_p)
+      flash[:notice] = "変更しました。"
+      redirect_to user_path(current_user)
     else
       flash[:notice] = "変更に失敗しました。"
       render :edit
@@ -49,7 +51,7 @@ end
   def index
     @posts = Post.order(created_at: :desc)
   end
-  
+
   def show
     @post = Post.find(params[:id])
     @comment = Comment.new
@@ -58,6 +60,6 @@ end
   private
 
   def post_params
-    params.require(:post).permit(:content, :genre_id, images: [])
+    params.require(:post).permit(:content, :genre_id, youtube_urls_attributes: [:path, :_destroy], images: [])
   end
 end
