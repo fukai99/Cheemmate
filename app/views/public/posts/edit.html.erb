@@ -1,3 +1,4 @@
+<%= flash[:notice] %>
 <%= form_with model: @post, url: post_path(@post), method: :patch do |f| %>
 
    <h4>コメント</h4>
@@ -14,16 +15,9 @@
 
   
   
-  <h4>Youtube URL(※複数の動画をつけたい場合は改行して入力してください)</h4>
-  <% @post.youtube_urls.each do |youtube_url| %>
-      <iframe width="224" height="126" src="https://www.youtube.com/embed/<%= youtube_url.path %>" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe><br>
-  <% end %>
+  <%= link_to "動画を編集はこちら", edit_youtube_url_path(@post) %>
 
-  <%= f.fields_for :youtube_urls, @post.youtube_urls.build do |ff| %>
-
-    <%= ff.text_area :path, rows: 5, style: "width: 30%;" %>
-
-  <% end %>
+  
 
 
   <h4>ジャンル</h4>

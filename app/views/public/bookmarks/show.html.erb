@@ -1,38 +1,18 @@
-<%#= render partial: 'user_info', locals: { user: user } %>
+<h4><%= link_to @user.disply_name %>さんのBookmark一覧</h4>
 
+<% if @bookmarks.any? %>
+  <% @bookmarks.each do |bookmark| %>
+    <p>投稿日時: <%= bookmark.created_at.strftime("%Y-%m-%d %H:%M:%S") %></p>
+    <p>ジャンル名:<%= bookmark.genre.name %></p>
+    <%= bookmark.content %><br>
 
-<h4></h4>ジャンル検索</h4>
-<% @genres.each do |genre| %>
-  <!--(パラメータ名: 取得したい値=URLの?以降に表示される)-->
-  <%= link_to genre.name, posts_path(genre_id: genre.id) %>
-<% end %>
+    <% if bookmark.images.attached? %>
+      <% bookmark.images.each do |image| %>
+        <%= image_tag image, size: "150x150" %>
+      <% end %>
+    <% end %><br>
     
-<h1>投稿一覧</h1>
-<% @posts.each do |post| %>
-
-  <p>投稿日時: <%= post.created_at.strftime("%Y-%m-%d %H:%M:%S") %></p>
-
-  
-    <%= image_tag post.user.get_avatar(70,70) %>
-  
-
-  <p>ユーザーネーム<%= link_to post.user.disply_name, user_path(post.user) %></p>
-  
-  <p>属柄:<%= post.user.family_relationship %></p>
-
-  
-  <p>ジャンル名:<%= post.genre.name %></p>
-
-
-  <p>コメント<%= post.content %></p><br>
-
-  <% if post.images.attached? %>
-    <% post.images.each do |image| %>
-      <%= image_tag image, size: "150x150" %>
-    <% end %>
-  <% end %><br>
-
-  <% post.youtube_urls.each do |youtube_url| %>
+    <% bookmark.youtube_urls.each do |youtube_url| %>
       <iframe width="224" height="126" src="https://www.youtube.com/embed/<%= youtube_url.path %>" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe><br>
     <% end %>
     
@@ -76,4 +56,10 @@
   <% else %>
     <%= link_to "コメントする", post_path(post.id) %>
   <% end %><br>
+
+  <% end %>
+<% else %>
+  <h4>投稿がありません。<br>
+  bookmarkしてみましょう！<br>
+  <%= link_to "投稿一覧へ", posts_path %></h4>
 <% end %>

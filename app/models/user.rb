@@ -10,6 +10,7 @@ class User < ApplicationRecord
   
   has_many :bookmarks, dependent: :destroy
   
+  has_many :favorites, dependent: :destroy
   
   has_one_attached :avatar
   validates :is_member, inclusion: { in: [true, false] }

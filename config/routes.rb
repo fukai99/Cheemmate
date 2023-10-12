@@ -14,19 +14,21 @@ Rails.application.routes.draw do
   }
 
   scope module: :public do
+    resources :youtube_urls, only: [:edit, :update]
     root to: 'homes#top'
     resources :users, only: [:show, :edit, :update,] do
-      resources :bookmarks, only: [:index, :create, :destroy]
+      resource :bookmarks, only: [:show, :create, :destroy]
     end
     resources :posts, only: [:index, :update, :new, :destroy, :edit, :create, :show] do
       resources :comments, only: [:create, :destroy]
+      resource :favorites, only: [:create, :destroy]
     end
   end
 
   namespace :admin do
-    get 'comments/destroy'
+    resources :comments, only: [:destroy]
     resources :posts, only: [:index, :show, :destroy]
-    resources :users, only: [:show, :edit, :update,]
+    resources :users, only: [:show, :edit, :update]
     patch '/users/:id/withdrawal' => 'users#withdrawal', as: 'withdrawal'
     resources :genres, only: [:index, :update, :create, :destroy, :edit]
     get 'homes/top'
