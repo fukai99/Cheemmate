@@ -6,73 +6,75 @@
     <%= csrf_meta_tags %>
     <%= csp_meta_tag %>
     <script src="https://kit.fontawesome.com/c067b314d4.js" crossorigin="anonymous"></script>
-    <%= stylesheet_link_tag 'application', media: 'all', 'data-turbolinks-track': 'reload' %>
+    <%= stylesheet_pack_tag 'application', media: 'all', 'data-turbolinks-track': 'reload' %>
     <%= javascript_pack_tag 'application', 'data-turbolinks-track': 'reload' %>
-    
+
   </head>
-  <style>
- a {
-    color: black;
-    text-decoration: underline;
-  }
-  .custom-header {
-    background-color: blue;
-    }
-  </style>
 
   <body>
-    <nav class="navbar navbar-expand-lg navbar-dark custom-header">
-   <a class="navbar-brand" href="/">
-    </a>
-    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
-      <span class="navbar-toggler-icon"></span>
-    </button>
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+      <div class="container">
+        <a class="navbar-brand" href="/">
+          <h4>Cheemmate</h4>
+        </a>
+        
+        <div class="collapse navbar-collapse" id="navbarNavDropdown">
+          <ul class="navbar-nav ml-auto">
 
-    <div class="collapse navbar-collapse" id="navbarNav">
-      <ul class="navbar-nav nav-item nav-link ml-auto">
-        <% if user_signed_in? %>
-        <p class="navbar-text mx-auto pr-5 text-break font-weight-bold" >ようこそ、<%= current_user.disply_name %> さん！</p>
-        <li class="nav-item">
-          <%= link_to "マイページ", user_path(current_user), method: :get %>
-        </li>
-        <li class="nav-item">
-          <%= link_to "ブックマーク一覧", user_bookmarks_path(current_user) %>
-        </li>
-        <li class="nav-item">
-          <%= link_to "新規投稿", new_post_path, method: :get %>
-        </li>
-        <li class="nav-item">
-          <%= link_to "投稿一覧", posts_path, method: :get %>
-        </li>
-        <li class="nav-item">
-          <%= link_to "ログアウト", destroy_user_session_path, method: :delete %>
-        </li>
+            <% if user_signed_in? %>
+              
+              <p class="navbar-text mx-auto pr-5 text-break font-weight-bold" >ようこそ、<%= current_user.disply_name %> さん！</p>
 
-        <% elsif admin_signed_in? %>
-          <!-- 管理者ログイン時のメニュー -->
-          <li class="nav-item">
-            <%= link_to "ジャンル一覧", admin_genres_path, method: :get %>
-          </li>
-          <li class="nav-item">
-            <%= link_to "会員一覧", admin_homes_top_path, method: :get %>
-          </li>
-          <li class="nav-item">
-            <%= link_to "投稿一覧", admin_posts_path, method: :get %>
-          </li>
-          <li class="nav-item">
-            <%= link_to 'ログアウト', destroy_admin_session_path, method: :delete, class: 'nav-link' %>
-          </li>
-        <% else %>
-          <h1>Cheemmate</h1>
+              <li class="nav-item">
+                <%= link_to "マイページ", user_path(current_user),class:"nav-link text-light" %>
+              </li>
+              <li class="nav-item">
+                <%= link_to "ブックマーク一覧", user_bookmarks_path(current_user),class:"nav-link text-light" %>
+              </li>
+              <li class="nav-item">
+                <%= link_to "新規投稿", new_post_path,class:"nav-link text-light" %>
+              </li>
+              <li class="nav-item">
+                <%= link_to "投稿一覧", posts_path,class:"nav-link text-light" %>
+              </li>
+              <li class="nav-item">
+                <%= link_to "ログアウト", destroy_user_session_path, method: :delete,class:"nav-link text-light" %>
+              </li>
 
+            <% elsif admin_signed_in? %>
+            <!-- 管理者ログイン時のメニュー -->
+              <li class="nav-item">
+                <%= link_to "ジャンル一覧", admin_genres_path,class:"nav-link text-light" %>
+              </li>
+              <li class="nav-item">
+                <%= link_to "会員一覧", admin_homes_top_path,class:"nav-link text-light" %>
+              </li>
+              <li class="nav-item">
+                <%= link_to "投稿一覧", admin_posts_path,class:"nav-link text-light" %>
+              </li>
+              <li class="nav-item">
+                <%= link_to 'ログアウト', destroy_admin_session_path, method: :delete,class:"nav-link text-light" %>
+              </li>
 
+            <% end %>
+          </ul>
+        </div>
+      </div>
+    </nav>
 
-        <% end %>
-      </ul>
-    </div>
-  </nav>
-
-  <%= flash[:notice] %>
+    <%= flash[:notice] %>
     <%= yield %>
   </body>
+
+  <footer>
+    <!--mt=margin top-->
+    <div class="container mt-5">
+      <div class="row">
+        <!--mx=左右のmargin-->
+        <div class="mx-auto">
+          <p>お問合せはこちらまで：000-000-0000</p>
+        </div>
+      </div>
+    </div>
+  </footer>
 </html>
