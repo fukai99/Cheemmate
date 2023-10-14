@@ -1,7 +1,12 @@
 class Admin::PostsController < ApplicationController
 
   def index
-    @posts = Post.order(created_at: :desc)
+   if(params[:genre_id])
+     @posts = Post.where(genre_id: params[:genre_id]).order(created_at: :desc)
+   else
+     @posts = Post.order(created_at: :desc)
+   end
+     @genres = Genre.all
   end
 
   def show

@@ -38,15 +38,7 @@ class Public::PostsController < ApplicationController
       flash[:notice] = "変更に失敗しました。"
       render :edit
     end
-    #post_p = post_params
-    #post_p[:youtube_urls_attributes]["0"][:path] = post_p[:youtube_urls_attributes]["0"][:path].last(11)
-    #if @post.update(post_p)
-      #flash[:notice] = "変更しました。"
-      #redirect_to user_path(current_user)
-    #else
-      #flash[:notice] = "変更に失敗しました。"
-      #render :edit
-    #end
+    
   end
 
   def destroy
@@ -56,8 +48,12 @@ class Public::PostsController < ApplicationController
   end
 
   def index
-    @posts = Post.order(created_at: :desc)
-    @genres = Genre.all
+    if(params[:genre_id])
+     @posts = Post.where(genre_id: params[:genre_id]).order(created_at: :desc)
+    else
+     @posts = Post.order(created_at: :desc)
+    end
+     @genres = Genre.all
   end
 
   def show

@@ -1,26 +1,38 @@
 <%#= render partial: 'user_info', locals: { user: user } %>
 
+<div class="col-xs-2">
+  <table class="table table-hover table-bordered">
+    <thead>
+    <tr>
+      <th>ジャンル検索</th>
+    </tr>
+    </thead>
+    <tbody>
+      <% @genres.each do |genre| %>
+        <tr>
+          <!--(パラメータ名: 取得したい値=URLの?以降に表示される)-->
+          <td><%= link_to genre.name, posts_path(genre_id: genre.id) %></td>
+        </tr>
+      <% end %>
+    </tbody>
+  </table>
+</div>
 
-<h4></h4>ジャンル検索</h4>
-<% @genres.each do |genre| %>
-  <!--(パラメータ名: 取得したい値=URLの?以降に表示される)-->
-  <%= link_to genre.name, posts_path(genre_id: genre.id) %>
-<% end %>
-    
+
 <h1>投稿一覧</h1>
 <% @posts.each do |post| %>
 
   <p>投稿日時: <%= post.created_at.strftime("%Y-%m-%d %H:%M:%S") %></p>
 
-  
+
     <%= image_tag post.user.get_avatar(70,70) %>
-  
+
 
   <p>ユーザーネーム<%= link_to post.user.disply_name, user_path(post.user) %></p>
-  
+
   <p>属柄:<%= post.user.family_relationship %></p>
 
-  
+
   <p>ジャンル名:<%= post.genre.name %></p>
 
 
@@ -35,40 +47,42 @@
   <% post.youtube_urls.each do |youtube_url| %>
       <iframe width="224" height="126" src="https://www.youtube.com/embed/<%= youtube_url.path %>" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe><br>
     <% end %>
-    
+
     <% if post.favorited_by?(current_user) %>
     <p>
       <%= link_to post_favorites_path(post), method: :delete do %>
         <i class="fas fa-heart" style="color: #eca7df;"></i>
-        <%= post.favorites.count %> いいね
+        <%= post.favorites.count %> 
       <% end %>
     </p>
     <% else %>
     <p>
       <%= link_to post_favorites_path(post), method: :post do %>
-        <i class="far fa-heart"></i>
-        <%= post.favorites.count %> いいね
+        <i class="far fa-heart" style="color: #eca7df;"></i>
+        <%= post.favorites.count %>
       <% end %>
     </p>
   <% end %>
-  
-    <% if post.favorited_by?(current_user) %>
+
+  <% if post.bookmarked_by?(current_user) %>
     <p>
-      <%= link_to user_bookmarks_path(post), method: :delete do %>
-        <i class="fa-solid fa-bookmark" style="color: #335899;"></i>
-        
+      <%= link_to post_bookmarks_path(post), method: :delete do %>
+        <i class="fas fa-bookmark" style="color: #5884d0;"></i>
       <% end %>
     </p>
     <% else %>
     <p>
-      <%= link_to user_bookmarks_path(post), method: :post do %>
-        <i class="fal-regular fa-bookmark"></i>
-        
+      <%= link_to post_bookmarks_path(post), method: :post do %>
+        <i class="far fa-bookmark" style="color: #5884d0;"></i>
       <% end %>
     </p>
   <% end %>
-    
-  <p>コメント件数：<%= link_to post.comments.count, post_path(post.id) %></p>
+
+  <% if current_user.commented_on?(post) %>
+  <p><i class="fas fa-comment" style="color: #48350e;"></i><%= link_to post.comments.count, post_path(post) %></p>
+<% else %>
+  <p><i class="far fa-comment" style="color: #48350e;"></i><%= link_to post.comments.count, post_path(post) %></p>
+<% end %>
 
   <% if current_user == post.user %>
     <%= link_to "編集", edit_post_path(post) %>

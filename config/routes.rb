@@ -14,18 +14,19 @@ Rails.application.routes.draw do
   }
 
   scope module: :public do
+    post "users/guest_sign_in", to: "users/sessions#guest_sign_in"
     resources :youtube_urls, only: [:edit, :update]
     root to: 'homes#top'
-    resources :users, only: [:show, :edit, :update,] do
-      resource :bookmarks, only: [:show, :create, :destroy]
-    end
+    resources :users, only: [:show, :edit, :update,]
     resources :posts, only: [:index, :update, :new, :destroy, :edit, :create, :show] do
+      resource :bookmarks, only: [:show, :create, :destroy]
       resources :comments, only: [:create, :destroy]
       resource :favorites, only: [:create, :destroy]
     end
   end
 
   namespace :admin do
+
     resources :comments, only: [:destroy]
     resources :posts, only: [:index, :show, :destroy]
     resources :users, only: [:show, :edit, :update]

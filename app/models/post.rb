@@ -7,12 +7,13 @@ class Post < ApplicationRecord
   has_many :bookmarks, dependent: :destroy
   has_many :favorites, dependent: :destroy
   has_many_attached :images, dependent: :destroy
-  
-  def favorited_by?(user)
+
+  def bookmarked_by?(user)
     bookmarks.exists?(user_id: user.id)
   end
-  
+
   def favorited_by?(user)
     favorites.exists?(user_id: user.id)
   end
+  
 end

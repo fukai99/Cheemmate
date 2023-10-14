@@ -1,4 +1,4 @@
-<%= form_with model: @post, url: post_path(@post), method: :patch do |f| %>
+<%= form_with model: @post, url: youtube_url_path(@post), method: :patch do |f| %>
 
   <% if @post.images.present? %>
     <% @post.youtube_urls.each do |youtube_url| %>
@@ -7,7 +7,7 @@
   <% end %>
   
   <h4>Youtube URL(※複数の動画をつけたい場合は改行して入力してください)</h4>
-  <%= f.text_area :path, rows: 5, style: "width: 30%;" %>
+  <%= f.text_area :path, rows: 5, style: "width: 50%;" %>
 
 
   <%= f.submit '変更を保存' %>

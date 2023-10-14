@@ -1,3 +1,21 @@
+
+<div class="col-xs-2">
+  <table class="table table-hover table-bordered">
+    <thead>
+    <tr>
+      <th>ジャンル検索</th>
+    </tr>
+    </thead>
+    <tbody>
+      <% @genres.each do |genre| %>
+        <tr>
+          <!--(パラメータ名: 取得したい値=URLの?以降に表示される)-->
+          <td><%= link_to genre.name,  admin_posts_path(genre_id: genre.id) %></td>
+        </tr>
+      <% end %>
+    </tbody>
+  </table>
+</div>
 <h1>投稿一覧</h1>
 <% @posts.each do |post| %>
 
