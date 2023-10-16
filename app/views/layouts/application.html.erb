@@ -39,7 +39,7 @@
               </li>
 
             <% elsif admin_signed_in? %>
-            <!-- 管理者ログイン時のメニュー -->
+             <!--管理者ログイン時のメニュー -->
               <li class="nav-item">
                 <%= link_to "ジャンル一覧", admin_genres_path,class:"nav-link text-light" %>
               </li>
@@ -63,6 +63,7 @@
               <li class="nav-item">
                 <%= link_to "ゲストログイン", users_guest_sign_in_path, class: "nav-link text-light" %>
               </li>
+            <% end %>
           </ul>
         </div>
       </div>
