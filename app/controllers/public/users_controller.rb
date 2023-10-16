@@ -13,6 +13,7 @@ class Public::UsersController < ApplicationController
   end
 
   def update
+    is_matching_login_user
       @user = User.find(params[:id])
     if @user.update(user_params)
       flash[:notice] = "変更しました."
@@ -25,7 +26,7 @@ class Public::UsersController < ApplicationController
   private
 
   def user_params
-    params.require(:user).permit(:disply_name, :avatar, :family_relationship, :is_member)
+    params.require(:user).permit(:disply_name, :avatar, :is_member)
   end
 
   def is_matching_login_user
