@@ -1,0 +1,11 @@
+<% if user.avatar.attached? %>
+  <%= image_tag user.avatar, size: "70x70" %><br>
+<% end %>
+<%= user.is_member ? '生徒' : '家族' %><br>
+表示名：<%= link_to user.disply_name, admin_user_path(user) %><br>
+氏名：<%= link_to admin_user_path(user) do %>
+  <%= user.family_name %>
+  <%= user.first_name %>
+<% end %><br>
+属柄：<%= user.family_relationship %><br>
+<%= link_to "ユーザー編集", edit_admin_user_path(user) %>

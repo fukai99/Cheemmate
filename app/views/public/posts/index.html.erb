@@ -1,5 +1,5 @@
 <%#= render partial: 'user_info', locals: { user: user } %>
-
+<%#= render 'searches/search_form' %>
 <div class="col-xs-2">
   <table class="table table-hover table-bordered">
     <thead>
@@ -30,7 +30,7 @@
 
   <p>ユーザーネーム<%= link_to post.user.disply_name, user_path(post.user) %></p>
 
-  <p>属柄:<%= post.user.family_relationship %></p>
+  <%= post.user.is_member ? '生徒' : '家族' %>
 
 
   <p>ジャンル名:<%= post.genre.name %></p>
@@ -83,6 +83,13 @@
 <% else %>
   <p><i class="far fa-comment" style="color: #48350e;"></i><%= link_to post.comments.count, post_path(post) %></p>
 <% end %>
+
+<% if current_user.commented_on?(post) %>
+  <p><i class="fas fa-comment" style="color: #48350e;"></i><%= link_to post.comments.count, post_path(post) %></p>
+<% else %>
+  <p><i class="far fa-comment" style="color: #48350e;"></i><%= link_to post.comments.count, post_path(post) %></p>
+<% end %>
+
 
   <% if current_user == post.user %>
     <%= link_to "編集", edit_post_path(post) %>

@@ -1,43 +1,81 @@
-<h4><%= link_to @user.disply_name %>さんの投稿一覧</h4>
-
-<% if current_user == @user %>
-  <%= link_to "ユーザー編集", admin_edit_user_path(@user.id) %>
-<% end %>
-
-<% if @user.avatar.attached? %>
-   <%= image_tag @user.avatar, size: "70x70" %>
-<% end %>
-<p>ユーザーネーム<%= link_to @user.disply_name %></p>
-
-<p>属柄:<%= @user.family_relationship %></p>
-
-
-<% if @posts.any? %>
-  <% @posts.each do |post| %>
-    <p>投稿日時: <%= post.created_at.strftime("%Y-%m-%d %H:%M:%S") %></p>
-    <p>ジャンル名:<%= post.genre.name %></p>
-    <%= post.content %><br>
-
-    <% if post.images.attached? %>
-      <% post.images.each do |image| %>
-        <%= image_tag image, size: "150x150" %>
+<div class="container-fluid">
+  <div class="row">
+    <div class="col-2">
+      <%= render 'user_info', user: @user %>
+    </div>
+    <div class="col-10">
+      <div class="text-center">
+        <h4><%= link_to @user.disply_name %>さんの投稿一覧</h4>
+      </div> 
+      <% if @posts.any? %>
+        <% @posts.each do |post| %>
+          <div class="row border-bottom">
+            <div class="col-md-6">
+              <!-- ポスト情報表示 -->
+              <p><%= post.created_at.strftime("%Y-%m-%d %H:%M:%S") %></p>
+              <p>ジャンル名: <%= post.genre.name %></p>
+            </div>
+            
+              <!-- 写真表示 -->
+              <% if post.images.attached? %>
+                <% post.images.each do |image| %>
+                  <%= image_tag image, size: "150x150" %>
+                <% end %>
+              <% end %>
+            
+            <div class="col-12">
+              <!-- ユーチューブ動画表示 -->
+              <div class="d-flex flex-wrap">
+                <% post.youtube_urls.each do |youtube_url| %>
+                  <div class="mr-3 mb-3">
+                    <iframe width="224" height="126" src="https://www.youtube.com/embed/<%= youtube_url.path %>" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+                  </div>
+                <% end %>
+              </div>
+            </div>
+            <div class="col-12">
+              <!-- 投稿についたコメント -->
+              <p>
+                <% if post.comments.count > 0 %>
+                  <i class="fas fa-comment" style="color: #48350e;"></i>
+                <% else %>
+                  <i class="far fa-comment" style="color: #48350e;"></i>
+                <% end %>
+                <%= link_to post.comments.count, admin_post_path(post.id) %>
+              </p>
+            </div>
+            <div class="col-12">
+              <%= link_to "削除", admin_post_path(post), method: :delete, class: "btn btn-danger float-right", data: { confirm: "削除しますか？" } %><br>
+            </div>
+          </div>
+        <% end %>
+      <% else %>
+        <div class="col-12">
+          <h4>投稿がありません。</h4>
+        </div>
       <% end %>
-    <% end %><br>
+    </div>
+  </div>
+</div>
+
+
+  
 
 
 
-    <% post.youtube_urls.each do |youtube_url| %>
-      <iframe width="224" height="126" src="https://www.youtube.com/embed/<%= youtube_url.path %>" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe><br>
-    <% end %>
 
-    <% if current_user == post.user %>
-      <%= link_to "削除", admin_post_path(post), method: :delete %><br>
-    <% end %>
+  
+   
 
-  <% end %>
-<% else %>
-  <h4>投稿がありません。</h4>
-<% end %>
+
+
+    
+
+   
+      
+    
+
+  
 
 
 

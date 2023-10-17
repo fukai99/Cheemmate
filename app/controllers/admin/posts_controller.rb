@@ -1,6 +1,7 @@
 class Admin::PostsController < ApplicationController
 
   def index
+     
    if(params[:genre_id])
      @posts = Post.where(genre_id: params[:genre_id]).order(created_at: :desc)
    else
@@ -10,6 +11,7 @@ class Admin::PostsController < ApplicationController
   end
 
   def show
+    #@user = User.find(params[:id])
     @post = Post.find(params[:id])
   end
 

@@ -31,6 +31,21 @@ class User < ApplicationRecord
   def commented_on?(post)
     comments.exists?(post_id: post.id)
   end
+  
+  # 検索方法分岐
+  def self.looks(search, word)
+    if search == "perfect_match"
+      @user = User.where("name LIKE?", "#{word}")
+    elsif search == "forward_match"
+      @user = User.where("name LIKE?","#{word}%")
+    elsif search == "backward_match"
+      @user = User.where("name LIKE?","%#{word}")
+    elsif search == "partial_match"
+      @user = User.where("name LIKE?","%#{word}%")
+    else
+      @user = User.all
+    end
+  end
 
 
   GUEST_USER_EMAIL = "guest@example.com"

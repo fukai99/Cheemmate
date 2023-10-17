@@ -1,54 +1,72 @@
+<div class="container-fluid">
+  <div class="row">
+    <div class="col-2">
+      <table class="table table-hover table-bordered">
+        <thead>
+          <tr>
+            <th>ジャンル検索</th>
+          </tr>
+        </thead>
+        <tbody>
+          <% @genres.each do |genre| %>
+            <tr>
+              <td><%= link_to genre.name, admin_posts_path(genre_id: genre.id) %></td>
+            </tr>
+          <% end %>
+        </tbody>
+      </table>
+    </div>
 
-<div class="col-xs-2">
-  <table class="table table-hover table-bordered">
-    <thead>
-    <tr>
-      <th>ジャンル検索</th>
-    </tr>
-    </thead>
-    <tbody>
-      <% @genres.each do |genre| %>
-        <tr>
-          <!--(パラメータ名: 取得したい値=URLの?以降に表示される)-->
-          <td><%= link_to genre.name,  admin_posts_path(genre_id: genre.id) %></td>
-        </tr>
+    <div class="col-10">
+      <div class="text-center">
+        <h2>投稿一覧</h2>
+      </div>
+      <% @posts.each do |post| %>
+        <div class="row border-bottom">
+          <div class="col-3">
+            <!-- アバター写真 -->
+            <% if post.user.avatar.attached? %>
+              <%= image_tag post.user.avatar, size: "70x70" %><br>
+            <% end %>
+            <%= post.user.is_member ? '生徒' : '家族' %><br>
+            表示名：<%= link_to post.user.disply_name, admin_user_path(post.user) %><br>
+            氏名：<%= link_to admin_user_path(post.user) do %>
+              <%= post.user.family_name %>
+              <%= post.user.first_name %>
+            <% end %><br>
+            属柄：<%= post.user.family_relationship %><br>
+          </div>
+          <div class="col-7">
+            <%= post.created_at.strftime("%Y-%m-%d %H:%M:%S") %>
+            <p>ジャンル名:<%= post.genre.name %></p>
+            <!-- 写真 -->
+            <% if post.images.attached? %>
+              <% post.images.each do |image| %>
+                <%= image_tag image, size: "150x150" %>
+              <% end %>
+            <% end %><br>
+            <!-- ユーチューブ -->
+            <div class="d-flex flex-wrap">
+              <% post.youtube_urls.each do |youtube_url| %>
+                <div class="mr-3 mb-3">
+                  <iframe width="224" height="126" src="https://www.youtube.com/embed/<%= youtube_url.path %>" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+                </div>
+              <% end %>
+            </div>
+            <p>コメント:<%= post.content %></p><br>
+            <!-- 投稿についたコメント -->
+            <p>
+              <% if post.comments.count > 0 %>
+                <i class="fas fa-comment" style="color: #48350e;"></i>
+              <% else %>
+                <i class="far fa-comment" style="color: #48350e;"></i>
+              <% end %>
+              <%= link_to post.comments.count, admin_post_path(post.id) %>
+            </p>
+            <%= link_to "削除", admin_post_path(post), method: :delete, class: "btn btn-danger float-right", data: { confirm: "削除しますか？" } %>
+          </div>
+        </div>
       <% end %>
-    </tbody>
-  </table>
+    </div>
+  </div>
 </div>
-<h1>投稿一覧</h1>
-<% @posts.each do |post| %>
-
-  <p>投稿日時: <%= post.created_at.strftime("%Y-%m-%d %H:%M:%S") %></p>
-
-  <% if post.user.avatar.attached? %>
-    <%= image_tag post.user.avatar, size: "70x70" %>
-  <% end %>
-
-  <p>ユーザーネーム<%= link_to post.user.disply_name, admin_user_path(post.user) %></p>
-
-  <p>属柄:<%= post.user.family_relationship %></p>
-
-
-  <p>ジャンル名:<%= post.genre.name %></p>
-
-
-  <p>コメント<%= post.content %></p><br>
-
-  <% if post.images.attached? %>
-    <% post.images.each do |image| %>
-      <%= image_tag image, size: "150x150" %>
-    <% end %>
-  <% end %><br>
-
-  <% post.youtube_urls.each do |youtube_url| %>
-      <iframe width="224" height="126" src="https://www.youtube.com/embed/<%= youtube_url.path %>" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe><br>
-    <% end %>
-
-  <p>コメント件数：<%= link_to post.comments.count, admin_post_path(post.id) %></p>
-
-
-
-  <%= link_to "削除", admin_post_path(post), method: :delete, data: { confirm: "削除しますか？" } %>
-
-<% end %>

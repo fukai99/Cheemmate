@@ -1,5 +1,6 @@
 Rails.application.routes.draw do
 
+  
   devise_for :admins, path: "admin/admins",
   skip: [:registrations, :passwords],
   controllers: {
@@ -14,6 +15,7 @@ Rails.application.routes.draw do
   }
 
   scope module: :public do
+    get "search" => "searches#search"
     resources :youtube_urls, only: [:edit, :update]
     root to: 'homes#top'
     resources :users, only: [:show, :edit, :update,]
@@ -25,7 +27,7 @@ Rails.application.routes.draw do
   end
 
   namespace :admin do
-
+    get "search" => "searches#search"
     resources :comments, only: [:destroy]
     resources :posts, only: [:index, :show, :destroy]
     resources :users, only: [:show, :edit, :update]
