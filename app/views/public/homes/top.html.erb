@@ -1,16 +1,16 @@
 <div class="container">
   <div class="btn-wraaper col-10 mx-auto">
-    <div class="row">
-       <%= link_to new_user_registration_path,class:"btn btn-success btn-sm btn-block mb-3 sign_up" do %>
-       新規登録
-       <% end %>
-    </div>
-    <div class="row">
+    <div class="row mt-5">
       <%= link_to new_user_session_path,class:"btn btn-info btn-sm btn-block mb-3 sign_in" do %>
        ログイン
        <% end %>
     </div>
-    <div class="row">
+    <div class="row mt-3">
+       <%= link_to new_user_registration_path,class:"btn btn-success btn-sm btn-block mb-3 sign_up" do %>
+       新規登録
+       <% end %>
+    </div>
+    <div class="row mt-3">
       <%= link_to "ゲストログイン（閲覧用）", users_guest_sign_in_path, class: "btn btn-secondary btn-sm btn-block mb-3 sign_in", method: :post %>
     </div>
   </div>

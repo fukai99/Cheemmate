@@ -1,3 +1,6 @@
+<div class="text-right">
+  <%= render 'admin/searches/search' %>
+</div>
 <div class="container-fluid">
   <div class="row">
     <div class="col-2">
@@ -24,10 +27,11 @@
       <% @posts.each do |post| %>
         <div class="row border-bottom">
           <div class="col-3">
+            <%#= render 'admin/users/user_info', user: @user %>
             <!-- アバター写真 -->
-            <% if post.user.avatar.attached? %>
-              <%= image_tag post.user.avatar, size: "70x70" %><br>
-            <% end %>
+            
+            <%= image_tag post.user.avatar, size: "70x70" %><br>
+           
             <%= post.user.is_member ? '生徒' : '家族' %><br>
             表示名：<%= link_to post.user.disply_name, admin_user_path(post.user) %><br>
             氏名：<%= link_to admin_user_path(post.user) do %>
@@ -37,14 +41,18 @@
             属柄：<%= post.user.family_relationship %><br>
           </div>
           <div class="col-7">
-            <%= post.created_at.strftime("%Y-%m-%d %H:%M:%S") %>
+            <p><%= post.created_at.strftime("%Y-%m-%d") %> &nbsp;&nbsp; <%= post.content %></p>
             <p>ジャンル名:<%= post.genre.name %></p>
             <!-- 写真 -->
-            <% if post.images.attached? %>
-              <% post.images.each do |image| %>
-                <%= image_tag image, size: "150x150" %>
+            <div class="d-flex flex-wrap">
+              <% if post.images.attached? %>
+                <% post.images.each do |image| %>
+                  <div class="mr-3 mb-3">
+                    <%= image_tag image, size: "150x150" %>
+                  </div>
+                <% end %>
               <% end %>
-            <% end %><br>
+            </div><br>
             <!-- ユーチューブ -->
             <div class="d-flex flex-wrap">
               <% post.youtube_urls.each do |youtube_url| %>
@@ -52,8 +60,7 @@
                   <iframe width="224" height="126" src="https://www.youtube.com/embed/<%= youtube_url.path %>" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
                 </div>
               <% end %>
-            </div>
-            <p>コメント:<%= post.content %></p><br>
+            </div><br>
             <!-- 投稿についたコメント -->
             <p>
               <% if post.comments.count > 0 %>

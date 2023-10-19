@@ -1,0 +1,7 @@
+
+<% post.comments.each do |comment| %>
+  <p><%= image_tag comment.user.get_avatar(50,50) %>
+  <%= comment.user.disply_name %>
+  <%= comment.created_at.strftime('%Y/%m/%d') %><%= comment.content %></p>
+<% end %>
+<!--@post=post-->

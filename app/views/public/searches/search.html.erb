@@ -1,11 +1,43 @@
-<h2>Results index</h2>
-<!--検索対象モデルがUserの時 -->
-  <% @range == "User" %>
-    
+
+  <h2>検索結果</h2>
+
+<table class="table table-hover table-inverse">
+  <!--検索対象モデルがUserの時 -->
+  <% if @range == "User" %>
+    <tbody>
       <% @users.each do |user| %>
-        <%= image_tag user.get_avatar(70,70) %><br>
-          <%= user.disply_name %>
-          <%= user.is_member ? '生徒' : '家族' %>
+        <tr>
+          <td><%= image_tag user.get_avatar(70,70) %></td>
+          <td><%= user.disply_name %></td>
+          <td><%= user.is_member ? '生徒' : '家族' %></td>
+        </tr>
       <% end %>
-    
-  
+    </tbody>
+  <% else %>
+    <!--検索対象モデルがUserではない時(= 検索対象モデルがBookの時) -->
+    <tbody>
+      <% @posts.each do |post| %>
+        <tr>
+          <td><%= post.created_at.strftime("%Y-%m-%d %H:%M:%S") %></td>
+          <td>ジャンル名:<%= post.genre.name %></td>
+          <td><% if post.images.attached? %>
+                <% post.images.each do |image| %>
+                  <%= image_tag image, size: "150x150" %>
+                <% end %>
+              <% end %>
+          </td>
+          <td><% post.youtube_urls.each do |youtube_url| %>
+                <iframe width="224" height="126" src="https://www.youtube.com/embed/<%= youtube_url.path %>" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+              <% end %>
+          </td>
+          <td><% if post.comments.count > 0 %>
+                <i class="fas fa-comment" style="color: #48350e;"></i>
+              <% else %>
+                <i class="far fa-comment" style="color: #48350e;"></i>
+              <% end %><%= link_to post.comments.count, post_path(post.id) %></td>
+          <td><%= link_to "削除", post_path(post), method: :delete, class: "btn btn-danger float-right", data: { confirm: "削除しますか？" } %></td>
+        </tr>
+      <% end %>
+    </tbody>
+  <% end %>
+</table>

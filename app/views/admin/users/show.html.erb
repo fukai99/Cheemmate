@@ -1,40 +1,42 @@
 <div class="container-fluid">
   <div class="row">
-    <div class="col-2">
+    <div class="col-3">
       <%= render 'user_info', user: @user %>
     </div>
-    <div class="col-10">
-      <div class="text-center">
+
+    <div class="col-9">
+      <div class="text-center pb-5 pt-5">
         <h4><%= link_to @user.disply_name %>さんの投稿一覧</h4>
-      </div> 
+      </div>
+
       <% if @posts.any? %>
         <% @posts.each do |post| %>
           <div class="row border-bottom">
-            <div class="col-md-6">
-              <!-- ポスト情報表示 -->
-              <p><%= post.created_at.strftime("%Y-%m-%d %H:%M:%S") %></p>
-              <p>ジャンル名: <%= post.genre.name %></p>
-            </div>
-            
-              <!-- 写真表示 -->
+            <!-- ポスト情報表示 -->
+            <p><%= post.created_at.strftime("%Y/%m/%d") %> &nbsp;&nbsp; <%= post.content %></p><br>
+            <p>ジャンル名: <%= post.genre.name %></p><br>
+            <!-- 写真表示 -->
+            <div class="d-flex flex-wrap">
               <% if post.images.attached? %>
                 <% post.images.each do |image| %>
-                  <%= image_tag image, size: "150x150" %>
-                <% end %>
-              <% end %>
-            
-            <div class="col-12">
-              <!-- ユーチューブ動画表示 -->
-              <div class="d-flex flex-wrap">
-                <% post.youtube_urls.each do |youtube_url| %>
                   <div class="mr-3 mb-3">
-                    <iframe width="224" height="126" src="https://www.youtube.com/embed/<%= youtube_url.path %>" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+                    <%= image_tag image, size: "150x150" %>
                   </div>
                 <% end %>
-              </div>
+              <% end %>
             </div>
-            <div class="col-12">
-              <!-- 投稿についたコメント -->
+
+            <!-- ユーチューブ動画表示 -->
+            <div class="d-flex flex-wrap">
+              <% post.youtube_urls.each do |youtube_url| %>
+                <div class="mr-3 mb-3">
+                  <iframe width="224" height="126" src="https://www.youtube.com/embed/<%= youtube_url.path %>" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+                </div>
+              <% end %>
+            </div>
+
+            <!-- 投稿についたコメント -->
+            <div class="text-right">
               <p>
                 <% if post.comments.count > 0 %>
                   <i class="fas fa-comment" style="color: #48350e;"></i>
@@ -43,41 +45,16 @@
                 <% end %>
                 <%= link_to post.comments.count, admin_post_path(post.id) %>
               </p>
-            </div>
-            <div class="col-12">
-              <%= link_to "削除", admin_post_path(post), method: :delete, class: "btn btn-danger float-right", data: { confirm: "削除しますか？" } %><br>
+  
+              <br><%= link_to "削除", admin_post_path(post), method: :delete, class: "btn btn-danger float-right", data: { confirm: "削除しますか？" } %>
             </div>
           </div>
         <% end %>
       <% else %>
-        <div class="col-12">
+        <div class="col-9">
           <h4>投稿がありません。</h4>
         </div>
       <% end %>
     </div>
   </div>
 </div>
-
-
-  
-
-
-
-
-  
-   
-
-
-
-    
-
-   
-      
-    
-
-  
-
-
-
-
-

@@ -1,8 +1,8 @@
 <div class="container-fluid">
   <div class="row">
-    <div class="col-2">
-      <%#= render 'user_info', user: @user %>
-     
+    <div class="col-3">
+      <%#= render 'admin/users/user_info', user: @user %>
+
      <% if @post.user.avatar.attached? %>
         <%= image_tag @post.user.avatar, size: "70x70" %><br>
       <% end %>
@@ -14,16 +14,20 @@
       <% end %><br>
       属柄：<%= @post.user.family_relationship %><br>
     </div>
-    <div class="col-10">
+    <div class="col-9">
       <!-- ポスト情報表示 -->
-      <p><%= @post.created_at.strftime("%Y-%m-%d %H:%M:%S") %></p>
+        <p><%= @post.created_at.strftime("%Y/%m/%d") %> &nbsp;&nbsp; <%= @post.content %></p>
       <p>ジャンル名:<%= @post.genre.name %></p>
       <!-- 写真表示 -->
-      <% if @post.images.attached? %>
-        <% @post.images.each do |image| %>
-          <%= image_tag image, size: "150x150" %>
-        <% end %>
-      <% end %><br>
+      <div class="d-flex flex-wrap">
+        <% if @post.images.attached? %>
+          <% @post.images.each do |image| %>
+            <div class="mr-3 mb-3">
+              <%= image_tag image, size: "150x150" %>
+            </div>
+          <% end %>
+        <% end %><br>
+      </div>
       <!-- ユーチューブ動画表示 -->
       <div class="d-flex flex-wrap">
         <% @post.youtube_urls.each do |youtube_url| %>
@@ -32,9 +36,9 @@
           </div>
         <% end %>
       </div>
-      <p>コメント:<%= @post.content %></p><br>
+
       <!-- 投稿についたコメント -->
-<table class="table col-12 mx-auto">
+<table class="table col-12 mx-auto table-hover">
   <thead>
     <tr>
       <th>日時</th>

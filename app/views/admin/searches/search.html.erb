@@ -1,2 +1,72 @@
-<h1>Admin::Searches#search</h1>
-<p>Find me in app/views/admin/searches/search.html.erb</p>
+<h2>検索結果</h2>
+<table class="table table-hover table-inverse">
+  <!-- 検索対象モデルがUserの時 -->
+  <% if @range == "User" %>
+    <tbody>
+      <% @users.each do |user| %>
+        <tr>
+          <!-- ユーザーのアバター写真 -->
+          <td><%= image_tag user.get_avatar(70, 70) %></td>
+          <!-- 氏名 -->
+          <td>
+            <%= link_to admin_user_path(user) do %>
+              <%= user.family_name %> &nbsp;&nbsp; <%= user.first_name %>
+            <% end %>
+          </td>
+          <!-- ユーザーが生徒または家族かどうか -->
+          <td><%= user.is_member ? '生徒' : '家族' %></td>
+        </tr>
+      <% end %>
+    </tbody>
+  <% else %>
+    <!-- 検索対象モデルがPostの時-->
+    <tbody>
+      <tr>
+        <th class="col-1">日時</th>
+        <th class="col-2">ユーザー</th>
+        <th class="col-2">ジャンル</th>
+        <th class="col-1">コメント</th>
+        <th class=colspan="5">投稿</th>
+      </tr>
+      <% @posts.each do |post| %>
+        <tr>
+          <!-- 投稿の作成日時 -->
+           <th class="col-1"><%= post.created_at.strftime("%Y/%m/%d") %></td>
+           <th><%= link_to admin_user_path(post.user) do %>
+              <%= post.user.family_name %>
+              <%= post.user.first_name %><% end %></td>
+          <!-- 投稿のジャンル名 -->
+           <th><%= post.genre.name %></td>
+           <th><%= post.content %></td>
+           <th>
+            <!-- 投稿に添付された画像の表示 -->
+            <% if post.images.attached? %>
+              <% post.images.each do |image| %>
+                <%= image_tag image, size: "150x150" %>
+              <% end %>
+            <% end %>
+          </td>
+          <th>
+            <!-- 投稿に添付されたYouTube動画の埋め込み -->
+            <% post.youtube_urls.each do |youtube_url| %>
+              <iframe width="224" height="126" src="https://www.youtube.com/embed/<%= youtube_url.path %>" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+            <% end %>
+          </td>
+          <th>
+            <!-- 投稿についたコメントの表示 -->
+            <% if post.comments.count > 0 %>
+              <i class="fas fa-comment" style="color: #48350e;"></i>
+            <% else %>
+              <i class="far fa-comment" style="color: #48350e;"></i>
+            <% end %>
+            <%= link_to post.comments.count, admin_post_path(post.id) %>
+          </td>
+          <td>
+            <!-- 投稿の削除ボタン -->
+            <%= link_to "削除", admin_post_path(post), method: :delete, class: "btn btn-danger float-right", data: { confirm: "削除しますか？" } %>
+          </td>
+        </tr>
+      <% end %>
+    </tbody>
+  <% end %>
+</table>

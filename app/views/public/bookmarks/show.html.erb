@@ -2,9 +2,9 @@
 
 <% if @bookmarks.any? %>
   <% @bookmarks.each do |bookmark| %>
-    <p>投稿日時: <%= bookmark.post.created_at.strftime("%Y-%m-%d %H:%M:%S") %></p>
-    <p>ジャンル名:<%= bookmark.post.genre.name %></p>
-    <%= bookmark.post.content %><br>
+    <p><%= bookmark.post.created_at.strftime("%Y/%m/%d") %> &nbsp;&nbsp; <%= bookmark.post.content %></p>
+    <p>ジャンル:<%= bookmark.post.genre.name %></p>
+    
 
     <% if bookmark.post.images.attached? %>
       <% bookmark.post.images.each do |image| %>
@@ -51,7 +51,6 @@
 <% else %>
   <p><i class="far fa-comment" style="color: #48350e;"></i><%= link_to bookmark.post.comments.count, post_path(bookmark.post) %></p>
 <% end %>
-    <%= link_to "コメントする", post_path(bookmark.post) %><br>
     <% if current_user == bookmark.user %>
       <%= link_to "編集", edit_post_path(bookmark.post) %>
       <%= link_to "削除", post_path(bookmark.post), method: :delete, data: { confirm: "削除しますか？" } %>

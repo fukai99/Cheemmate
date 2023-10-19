@@ -12,8 +12,8 @@
 
   <p>ジャンル名:<%= @post.genre.name %></p>
 
-  
-  
+
+
   <p>コメント<%= @post.content %></p><br>
 
   <% if @post.images.attached? %>
@@ -37,50 +37,57 @@
     <p>
       <%= link_to post_favorites_path(@post), method: :delete do %>
         <i class="fas fa-heart" style="color: #eca7df;"></i>
-        <%= @post.favorites.count %> 
+        <%= @post.favorites.count %>
       <% end %>
     </p>
     <% else %>
     <p>
       <%= link_to post_favorites_path(@post), method: :post do %>
         <i class="far fa-heart" style="color: #eca7df;"></i>
-        <%= @post.favorites.count %> 
+        <%= @post.favorites.count %>
       <% end %>
     </p>
   <% end %>
-  
+
     <% if @post.bookmarked_by?(current_user) %>
     <p>
       <%= link_to post_bookmarks_path(@post), method: :delete do %>
         <i class="fas fa-bookmark" style="color: #5884d0;"></i>
-        
+
       <% end %>
     </p>
     <% else %>
     <p>
       <%= link_to post_bookmarks_path(@post), method: :post do %>
         <i class="far fa-bookmark" style="color: #5884d0;"></i>
-        
+
       <% end %>
     </p>
   <% end %>
-  
+
 <div>
+  <div id="comment_counter">
+    <%= render "public/comments/counter", post: @post %>
+  </div>
+  <!--<#% if current_user.commented_on?(@post) %>-->
+  <!--  <p><i class="fas fa-comment" style="color: #48350e;"></i><%#= link_to @post.comments.count, post_path(@post) %></p>-->
+  <!--<%# else %>-->
+  <!--  <p><i class="far fa-comment" style="color: #48350e;"></i><%#= link_to @post.comments.count, post_path(@post) %></p>-->
+  <!--<%# end %>-->
   
-  <% if current_user.commented_on?(@post) %>
-  <p><i class="fas fa-comment" style="color: #48350e;"></i><%= link_to @post.comments.count, post_path(@post) %></p>
-<% else %>
-  <p><i class="far fa-comment" style="color: #48350e;"></i><%= link_to @post.comments.count, post_path(@post) %></p>
-<% end %>
-  <% @post.comments.each do |comment| %>
-    <p><%#= image_tag comment.user.get_profile_image(100,100) %></p>
-    <%= comment.user.disply_name %>
-    <%= comment.created_at.strftime('%Y/%m/%d') %><%= comment.content %>
-  <% end %>
+  <div id="comment_index">
+    <%= render "public/comments/index", post: @post %>
+  </div>
+  <!--<%# @post.comments.each do |comment| %>-->
+  <!--  <p><%#= image_tag comment.user.get_avatar(50,50) %>-->
+  <!--  <%#= comment.created_at.strftime('%Y/%m/%d') %><%#= comment.content %></p>-->
+  <!--<%# end %>-->
 </div>
-<div>
-  <%= form_with model: [@post, @comment] do |f| %>
-    <%= f.text_area :content, placeholder: "コメントをここに入力" %>
-    <%= f.submit "送信する" %>
-  <% end %>
-</div>
+
+<%= render "public/comments/form", post: @post, comment: @comment %>
+<!--<div>-->
+<!--  <%#= form_with model: [@post, @comment] do |f| %>-->
+<!--    <%#= f.text_area :content, placeholder: "コメントをここに入力" %>-->
+<!--    <%#= f.submit "送信する" %>-->
+<!--  <%# end %>-->
+<!--</div>-->

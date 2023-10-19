@@ -1,5 +1,6 @@
 class Admin::GenresController < ApplicationController
   
+  
   def index
     #投稿
     @genre = Genre.new

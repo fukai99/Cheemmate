@@ -1,85 +1,110 @@
-<%= render 'info', user: @user %><br>
-<a>＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝</a>
-<%#= image_tag @user.get_avatar(70,70) %><br>
-<%#= @user.disply_name %>
-<%#= @user.is_member ? '生徒' : '家族' %>
-<%# if current_user == @user %>
-  <%#= link_to "ユーザー編集", edit_user_path(@user.id) %>
-<%# end %><br>
+<div class="float-right">
+  <%= render 'public/searches/search' %>
+</div>
+<div class="container-fluid">
+  <div class="row">
+    <div class="col-3">
+      <div class="pt-3">
+        <%= render 'info', user: @user %>
+      </div>
+      <table class="table table-hover table-bordered mt-5">
+        <thead>
+          <tr>
+            <th>ジャンル検索</th>
+          </tr>
+        </thead>
+        <tbody>
+          <% @genres.each do |genre| %>
+            <tr>
+              <td><%= link_to genre.name, posts_path(genre_id: genre.id) %></td>
+            </tr>
+          <% end %>
+        </tbody>
+      </table>
+    </div>
 
-<h4><%= link_to @user.disply_name %>さんの投稿一覧</h4>
-   
+    <div class="col-9">
+      <div class="text-center pt-3 pb-3">
+        <h4><%= @user.disply_name %>さんの投稿一覧</h4>
+      </div>
+      <% if @posts.any? %>
+        <% @posts.each do |post| %>
+          <div class="border-bottom mb-3 pb-3" style="overflow: hidden;">
+            <p><%= post.created_at.strftime("%Y/%m/%d") %> &nbsp;&nbsp; <%= post.content %></p>
+            <p>ジャンル名: <%= post.genre.name %></p>
 
+            <!-- 写真表示 -->
+            <div class="d-flex flex-wrap">
+              <% if post.images.attached? %>
+                <% post.images.each do |image| %>
+                  <div class="mr-3 mb-3">
+                    <%= image_tag image, size: "150x150" %>
+                  </div>
+                <% end %>
+              <% end %>
+            </div>
 
+            <!-- ユーチューブ動画表示 -->
+            <div class="d-flex flex-wrap">
+              <% post.youtube_urls.each do |youtube_url| %>
+                <div class="mr-3 mb-3">
+                  <iframe width="224" height="126" src="https://www.youtube.com/embed/<%= youtube_url.path %>" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+                </div>
+              <% end %>
+            </div>
 
-<% if @posts.any? %>
-  <% @posts.each do |post| %>
-    <p>投稿日時: <%= post.created_at.strftime("%Y-%m-%d %H:%M:%S") %></p>
-    <p>ジャンル名:<%= post.genre.name %></p>
-    <%= post.content %><br>
+<%#= render 'public/posts/asynchronous', post: @posts %>
 
-    <% if post.images.attached? %>
-      <% post.images.each do |image| %>
-        <%= image_tag image, size: "150x150" %>
+            <!-- いいね -->
+            <% if post.favorited_by?(current_user) %>
+              <%= link_to post_favorites_path(post), method: :delete do %>
+                <i class="fas fa-heart" style="color: #eca7df;"></i>
+              <% end %>
+              <%= post.favorites.count %>
+            <% else %>
+              <%= link_to post_favorites_path(post), method: :post do %>
+                <i class="far fa-heart" style="color: #eca7df;"></i>
+              <% end %>
+              <%= post.favorites.count %>
+            <% end %> &nbsp;&nbsp;
+
+            <!-- ブックマーク -->
+            <% if post.bookmarked_by?(current_user) %>
+              <%= link_to post_bookmarks_path(post), method: :delete do %>
+                <i class="fas fa-bookmark" style="color: #5884d0;"></i>
+              <% end %>
+            <% else %>
+              <%= link_to post_bookmarks_path(post), method: :post do %>
+                <i class="far fa-bookmark" style="color: #5884d0;"></i>
+              <% end %>
+            <% end %> &nbsp;&nbsp;
+
+            <!-- コメント数表示 -->
+            <% if current_user.commented_on?(post) %>
+              <i class="fas fa-comment" style="color: #48350e;"></i>
+              <%= link_to post.comments.count, post_path(post) %>
+            <% else %>
+              <i class="far fa-comment" style="color: #48350e;"></i>
+              <%= link_to post.comments.count, post_path(post) %>
+            <% end %><br>
+
+            <!-- 編集と削除ボタン -->
+            <% if current_user == post.user %>
+              <div class="float-right">
+                <div class="btn-group">
+                  <%= link_to "編集", edit_post_path(post), class: "btn btn-success" %>
+                  <%= link_to "削除", post_path(post), method: :delete, class: "btn btn-danger", data: { confirm: "削除しますか？" } %>
+                </div>
+              </div>
+            <% end %>
+          </div>
+        <% end %>
+      <% else %>
+        <h4>投稿がありません。<br>
+          投稿してみましょう！<br>
+          <%= link_to "投稿はこちらから", new_post_path %></h4>
       <% end %>
-    <% end %><br>
-
-
-
-    <% post.youtube_urls.each do |youtube_url| %>
-      <iframe width="224" height="126" src="https://www.youtube.com/embed/<%= youtube_url.path %>" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe><br>
-    <% end %>
-    
-    <% if post.favorited_by?(post) %>
-      <p>
-      <%= link_to post_favorites_path(post), method: :delete do %>
-        <i class="fas fa-heart" style="color: #eca7df;"></i>
-      <% end %>
-      </p>
-    <% else %>
-      <p>
-      <%= link_to post_favorites_path(post), method: :post do %>
-        <i class="far fa-heart" style="color: #eca7df;"></i>
-        <%= post.favorites.count %>
-        <% end %>
-      </p>
-    <% end %>
-
-    <% if post.bookmarked_by?(post) %>
-      <p>
-        <%= link_to post_bookmarks_path(post), method: :delete do %>
-          <i class="fas fa-bookmark" style="color: #5884d0;"></i>
-        <% end %>
-      </p>
-    <% else %>
-      <p>
-        <%= link_to post_bookmarks_path(post), method: :post do %>
-          <i class="far fa-bookmark" style="color: #5884d0;"></i>
-        <% end %>
-      </p>
-    <% end %>
-    
-    
-    <% if current_user.commented_on?(post) %>
-  <p><i class="fas fa-comment" style="color: #48350e;"></i><%= link_to post.comments.count, post_path(post) %></p>
-<% else %>
-  <p><i class="far fa-comment" style="color: #48350e;"></i><%= link_to post.comments.count, post_path(post) %></p>
-<% end %>
-
-    <%= link_to "コメントする", post_path(post) %><br>
-    
-    <% if current_user == post.user %>
-      <%= link_to "編集", edit_post_path(post) %>
-      <%= link_to "削除", post_path(post), method: :delete %><br>
-    <% end %>
-
-  <% end %>
-<% else %>
-  <h4>投稿がありません。<br>
-  投稿してみましょう！<br>
-  <%= link_to "投稿はこちらから", new_post_path %></h4>
-<% end %>
-
-
-
+    </div>
+  </div>
+</div>
 

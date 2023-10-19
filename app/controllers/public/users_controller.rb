@@ -5,6 +5,7 @@ class Public::UsersController < ApplicationController
   def show
     @user = User.find(params[:id])
     @posts = @user.posts.order(updated_at: :desc)
+    @genres = Genre.all
   end
 
   def edit

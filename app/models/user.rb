@@ -31,20 +31,34 @@ class User < ApplicationRecord
   def commented_on?(post)
     comments.exists?(post_id: post.id)
   end
-  
+
   # 検索方法分岐
-  def self.looks(search, word)
-    if search == "perfect_match"
-      @user = User.where("name LIKE?", "#{word}")
-    elsif search == "forward_match"
-      @user = User.where("name LIKE?","#{word}%")
-    elsif search == "backward_match"
-      @user = User.where("name LIKE?","%#{word}")
-    elsif search == "partial_match"
-      @user = User.where("name LIKE?","%#{word}%")
+  # def self.looks(search, word)
+  #   @user = User.where("disply_name LIKE?","%#{word}%").
+  #       or(where("first_name LIKE?","%#{word}%")).
+  #       or(where("family_name LIKE?","%#{word}%"))
+  #   if @user.empty?
+  #     @user = User.all
+  #   end
+  # end
+    # return @user
+  # end
+  
+  def self.looks(search, word, is_admin)
+    if is_admin
+      @users = where("disply_name LIKE ?", "%#{word}%")
+                .or(where("first_name LIKE ?", "%#{word}%"))
+                .or(where("family_name LIKE ?", "%#{word}%"))
     else
-      @user = User.all
+      @users = where("disply_name LIKE ?", "%#{word}%")
+      
     end
+
+    if @users.empty?
+      @users = User.all
+    end
+    @users = @users.where(is_deleted: false)
+    return @users
   end
 
 
