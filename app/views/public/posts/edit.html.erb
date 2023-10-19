@@ -14,10 +14,11 @@
   <% end %><br>
 
   
-  
-  <%= link_to "動画を編集はこちら", edit_youtube_url_path(@post) %>
-
-  
+  <% if @post.youtube_urls.empty? %>
+    <%= link_to "動画URLを追加する", new_post_youtube_urls_path(@post.id) %>
+  <% else %>
+    <%= link_to "動画URLを編集する", edit_post_youtube_urls_path(@post.id) %>
+  <% end %>
 
 
   <h4>ジャンル</h4>

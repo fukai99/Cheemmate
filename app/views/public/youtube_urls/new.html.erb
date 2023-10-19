@@ -1,4 +1,4 @@
-<%= form_with model: @youtube_url, url: post_youtube_urls_path(@post.id), method: :patch do |f| %>
+<%= form_with model: @youtube_url, url: post_youtube_urls_path(@post.id), method: :post do |f| %>
 
   <% if @post.images.present? %>
     <% @post.youtube_urls.each do |youtube_url| %>
