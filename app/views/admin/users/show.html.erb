@@ -1,6 +1,6 @@
 <div class="container-fluid">
   <div class="row">
-    <div class="col-3">
+    <div class="col-3 pt-3">
       <%= render 'user_info', user: @user %>
     </div>
 
@@ -11,42 +11,68 @@
 
       <% if @posts.any? %>
         <% @posts.each do |post| %>
-          <div class="row border-bottom">
-            <!-- ポスト情報表示 -->
-            <p><%= post.created_at.strftime("%Y/%m/%d") %> &nbsp;&nbsp; <%= post.content %></p><br>
-            <p>ジャンル名: <%= post.genre.name %></p><br>
-            <!-- 写真表示 -->
-            <div class="d-flex flex-wrap">
-              <% if post.images.attached? %>
-                <% post.images.each do |image| %>
-                  <div class="mr-3 mb-3">
-                    <%= image_tag image, size: "150x150" %>
-                  </div>
-                <% end %>
-              <% end %>
+          <div class="border-bottom">
+            <div class="row">
+              <!-- ポスト情報表示 -->
+              <div class="col-12">
+                <p><%= post.created_at.strftime("%Y/%m/%d") %> &nbsp;&nbsp; <%= post.content %></p>
+              </div>
             </div>
 
-            <!-- ユーチューブ動画表示 -->
-            <div class="d-flex flex-wrap">
-              <% post.youtube_urls.each do |youtube_url| %>
-                <div class="mr-3 mb-3">
-                  <iframe width="224" height="126" src="https://www.youtube.com/embed/<%= youtube_url.path %>" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+            <div class="row">
+              <!-- ジャンル名表示 -->
+              <div class="col-12">
+                <p>ジャンル名: <%= post.genre.name %></p>
+              </div>
+            </div>
+
+            <div class="row">
+              <!-- 写真表示 -->
+              <div class="col-12">
+                <div class="d-flex flex-wrap">
+                  <% if post.images.attached? %>
+                    <% post.images.each do |image| %>
+                      <div class="mr-3 mb-3">
+                        <%= image_tag image, size: "150x150" %>
+                      </div>
+                    <% end %>
+                  <% end %>
                 </div>
-              <% end %>
+              </div>
             </div>
 
-            <!-- 投稿についたコメント -->
-            <div class="text-right">
-              <p>
-                <% if post.comments.count > 0 %>
-                  <i class="fas fa-comment" style="color: #48350e;"></i>
-                <% else %>
-                  <i class="far fa-comment" style="color: #48350e;"></i>
-                <% end %>
-                <%= link_to post.comments.count, admin_post_path(post.id) %>
-              </p>
-  
-              <br><%= link_to "削除", admin_post_path(post), method: :delete, class: "btn btn-danger float-right", data: { confirm: "削除しますか？" } %>
+            <div class="row">
+              <!-- ユーチューブ動画表示 -->
+              <div class="col-12">
+                <div class="d-flex flex-wrap">
+                  <% post.youtube_urls.each do |youtube_url| %>
+                    <div class="mr-3 mb-3">
+                      <iframe width="224" height="126" src="https://www.youtube.com/embed/<%= youtube_url.path %>" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+                    </div>
+                  <% end %>
+                </div>
+              </div>
+            </div>
+
+            <div class="row">
+              <!-- 投稿についたコメント -->
+              <div class="col-12">
+                <p>
+                  <% if post.comments.count > 0 %>
+                    <i class="fas fa-comment" style="color: #48350e;"></i>
+                  <% else %>
+                    <i class="far fa-comment" style="color: #48350e;"></i>
+                  <% end %>
+                  <%= link_to post.comments.count, admin_post_path(post.id) %>
+                </p>
+              </div>
+            </div>
+
+            <div class="row">
+              <!-- 削除ボタン -->
+              <div class="col-12 text-right">
+                <%= link_to "削除", admin_post_path(post), method: :delete, class: "btn btn-danger", data: { confirm: "削除しますか？" } %>
+              </div>
             </div>
           </div>
         <% end %>

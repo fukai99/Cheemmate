@@ -38,7 +38,7 @@ class Public::PostsController < ApplicationController
       flash[:notice] = "変更に失敗しました。"
       render :edit
     end
-    
+
   end
 
   def destroy

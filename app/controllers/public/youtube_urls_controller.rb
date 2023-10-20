@@ -3,7 +3,7 @@ class Public::YoutubeUrlsController < ApplicationController
 
   def new
     @post = Post.find(params[:post_id])
-    @youtube_url = YoutubeUrl.new
+    @youtube_url = YoutubeUrl.new(path: url.last(11))
   end
 
   def create
@@ -26,7 +26,7 @@ class Public::YoutubeUrlsController < ApplicationController
 
   def update
     @post = Post.find(params[:post_id])
-    @youtube_urls = @post.youtube_urls
+    @youtube_urls = @post.youtube_urls.split(/\R/)
 
     @youtube_urls.each do |url|
       if url.update(youtube_urls_params)
@@ -36,7 +36,7 @@ class Public::YoutubeUrlsController < ApplicationController
         flash[:alert] = "動画の変更に失敗しました。"
         render :edit
       end
-
+    
 
 
         # @youtube_url_params = youtube_urls_params

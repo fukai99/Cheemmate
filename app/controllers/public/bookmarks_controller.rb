@@ -1,6 +1,6 @@
 class Public::BookmarksController < ApplicationController
   before_action :authenticate_user!
-  
+
   def create
     post = Post.find(params[:post_id])
     bookmark = current_user.bookmarks.new(post_id: post.id)
@@ -18,5 +18,6 @@ class Public::BookmarksController < ApplicationController
   def show
     @user = current_user
     @bookmarks = @user.bookmarks.order(created_at: :desc)
+    @genres = Genre.all
   end
 end

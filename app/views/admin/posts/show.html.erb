@@ -1,18 +1,7 @@
 <div class="container-fluid">
   <div class="row">
-    <div class="col-3">
-      <%#= render 'admin/users/user_info', user: @user %>
-
-     <% if @post.user.avatar.attached? %>
-        <%= image_tag @post.user.avatar, size: "70x70" %><br>
-      <% end %>
-      <%= @post.user.is_member ? '生徒' : '家族' %><br>
-      表示名：<%= link_to @post.user.disply_name, admin_user_path(@post.user) %><br>
-      氏名：<%= link_to admin_user_path(@post.user) do %>
-        <%= @post.user.family_name %>
-        <%= @post.user.first_name %>
-      <% end %><br>
-      属柄：<%= @post.user.family_relationship %><br>
+    <div class="col-3 pt-3">
+      <%= render 'admin/users/user_info', user: @post.user %>
     </div>
     <div class="col-9">
       <!-- ポスト情報表示 -->

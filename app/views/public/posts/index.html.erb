@@ -1,10 +1,10 @@
-<div class="float-right">
-  <%= render 'public/searches/search' %>
-</div>
 <div class="container-fluid">
+  <div class=" row float-right">
+    <%= render 'public/searches/search' %>
+  </div>
   <div class="row">
     <div class="col-2">
-      <table class="table table-hover table-bordered">
+      <table class="table table-hover table-bordered mt-5">
         <thead>
           <tr>
             <th>ジャンル検索</th>
@@ -27,9 +27,7 @@
       <% @posts.each do |post| %>
         <div class="row border-bottom">
           <div class="col-3">
-            <%= image_tag post.user.get_avatar(70, 70) %>
-            <p>氏名<%= link_to post.user.disply_name, user_path(post.user) %></p>
-            <%= post.user.is_member ? '生徒' : '家族' %>
+            <%= render 'public/users/info', user: post.user %>
           </div>
 
           <div class="col-7">
@@ -56,47 +54,14 @@
                 </div>
               <% end %>
             </div><br>
-
-            <!-- いいね -->
-            <% if post.favorited_by?(current_user) %>
-              <%= link_to post_favorites_path(post), method: :delete do %>
-                <i class="fas fa-heart" style="color: #eca7df;"></i>
-                <%= post.favorites.count %>
-              <% end %>
-            <% else %>
-              <%= link_to post_favorites_path(post), method: :post do %>
-                <i class="far fa-heart" style="color: #eca7df;"></i>
-                <%= post.favorites.count %>
-              <% end %>
-            <% end %> &nbsp;&nbsp;
-
-            <!-- ブックマーク -->
-            <% if post.bookmarked_by?(current_user) %>
-              <%= link_to post_bookmarks_path(post), method: :delete do %>
-                <i class="fas fa-bookmark" style="color: #5884d0;"></i>
-              <% end %>
-            <% else %>
-              <%= link_to post_bookmarks_path(post), method: :post do %>
-                <i class="far fa-bookmark" style="color: #5884d0;"></i>
-              <% end %>
-            <% end %> &nbsp;&nbsp;
-
-            <!-- コメント数表示 -->
-            <% if current_user.commented_on?(post) %>
-              <i class="fas fa-comment" style="color: #48350e;"></i>
-              <%= link_to post.comments.count, post_path(post) %>
-            <% else %>
-              <i class="far fa-comment" style="color: #48350e;"></i>
-              <%= link_to post.comments.count, post_path(post) %>
-            <% end %><br>
+            <%= render 'asynchronous', post: post %>
 
             <!-- 編集と削除ボタン -->
             <% if current_user == post.user %>
               <div class="float-right">
                 <div class="btn-group">
                   <%= link_to "編集", edit_post_path(post), class: "btn btn-success" %>
-                  <%= link_to "削除", post_path(post), method: :delete, class: "btn btn-danger",
-                    data: { confirm: "削除しますか？" } %>
+                  <%= link_to "削除", post_path(post), method: :delete, class: "btn btn-danger", data: { confirm: "削除しますか？" } %>
                 </div>
               </div>
             <% end %>

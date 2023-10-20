@@ -1,66 +1,86 @@
-<h4><%= link_to @user.disply_name %>さんのBookmark一覧</h4>
 
-<% if @bookmarks.any? %>
-  <% @bookmarks.each do |bookmark| %>
-    <p><%= bookmark.post.created_at.strftime("%Y/%m/%d") %> &nbsp;&nbsp; <%= bookmark.post.content %></p>
-    <p>ジャンル:<%= bookmark.post.genre.name %></p>
+<div class="container-fluid">
+  <div class="float-right pt-3 pb-3">
+  <%= render 'public/searches/search' %>
+</div>
+  <div class="row">
+    <!--ジャンル 検索-->
+    <div class="col-2">
+      <table class="table table-hover table-bordered mt-5">
+        <thead>
+          <tr>
+            <th>ジャンル検索</th>
+          </tr>
+        </thead>
+        <tbody>
+          <% @genres.each do |genre| %>
+            <tr>
+              <td><%= link_to genre.name, posts_path(genre_id: genre.id) %></td>
+            </tr>
+          <% end %>
+        </tbody>
+      </table>
+    </div>
     
+    <div class="col-10">
+      <div class="text-center pt-3 pb-3">
+        <h4><%= link_to @user.disply_name %>さんのBookmark一覧</h4>
+      </div>
+      <% if @bookmarks.any? %>
+        <% @bookmarks.each do |bookmark| %>
+        
+          <div class="row border-bottom pb-3">
+            
+            <div class="col-3 pt-3">
+              <%= render 'public/users/info', user: bookmark.user %>
+            </div>
+          
+            <div class="col-7 pt-3">
+              
+              <p><%= bookmark.post.created_at.strftime("%Y/%m/%d") %> &nbsp;&nbsp; <%= bookmark.post.content %></p>
+              <p>ジャンル:<%= bookmark.post.genre.name %></p>
+    
+              <!-- 写真 -->
+              <div class="d-flex flex-wrap">
+                <% if bookmark.post.images.attached? %>
+                  <% bookmark.post.images.each do |image| %>
+                    <div class="mr-3 mb-3">
+                      <%= image_tag image, size: "150x150" %>
+                    </div>
+                  <% end %>
+                <% end %>
+              </div><br>
 
-    <% if bookmark.post.images.attached? %>
-      <% bookmark.post.images.each do |image| %>
-        <%= image_tag image, size: "150x150" %>
+              <!-- ユーチューブ -->
+              <div class="d-flex flex-wrap">
+                <% bookmark.post.youtube_urls.each do |youtube_url| %>
+                  <div class="mr-3 mb-3">
+                    <iframe width="224" height="126" src="https://www.youtube.com/embed/<%= youtube_url.path %>" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe><br>
+                  </div>
+                <% end %>
+              </div><br>
+            
+              <%= render 'public/posts/asynchronous', post: bookmark.post %>
+
+              <!-- 編集と削除ボタン -->
+              <% if current_user == bookmark.user %>
+                <div class="float-right">
+                  <div class="btn-group">
+                    <%= link_to "編集", edit_post_path(bookmark.post), class: "btn btn-success" %>
+                    <%= link_to "削除", post_path(bookmark.post), method: :delete, class: "btn btn-danger", data: { confirm: "削除しますか？" } %>
+                  </div>
+                </div>
+              <% end %>
+              
+            </div>
+          
+          </div>  
+        <% end %>
+      <% else %>
+        <h4>まだ保存された投稿がありません。<br>
+          bookmarkしてみましょう！<br>
+        <%= link_to "投稿一覧へ", posts_path %></h4>
       <% end %>
-    <% end %><br>
-
-    <% bookmark.post.youtube_urls.each do |youtube_url| %>
-      <iframe width="224" height="126" src="https://www.youtube.com/embed/<%= youtube_url.path %>" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe><br>
-    <% end %>
-
-    <% if bookmark.post.favorited_by?(current_user) %>
-      <p>
-      <%= link_to post_favorites_path(bookmark.post), method: :delete do %>
-        <i class="fas fa-heart" style="color: #eca7df;"></i>
-        <%= bookmark.post.favorites.count %>
-      <% end %>
-      </p>
-    <% else %>
-      <p>
-      <%= link_to post_favorites_path(bookmark.post), method: :post do %>
-        <i class="far fa-heart" style="color: #eca7df;"></i>
-        <%= bookmark.post.favorites.count %>
-        <% end %>
-      </p>
-    <% end %>
-
-    <% if bookmark.post.bookmarked_by?(current_user) %>
-      <p>
-        <%= link_to post_bookmarks_path(bookmark.post), method: :delete do %>
-          <i class="fas fa-bookmark" style="color: #5884d0;"></i>
-        <% end %>
-      </p>
-    <% else %>
-      <p>
-        <%= link_to post_bookmarks_path(bookmark.post), method: :post do %>
-          <i class="far fa-bookmark" style="color: #5884d0;"></i>
-        <% end %>
-      </p>
-    <% end %>
-    
-    <% if current_user.commented_on?(bookmark.post) %>
-  <p><i class="fas fa-comment" style="color: #48350e;"></i><%= link_to bookmark.post.comments.count, post_path(bookmark.post) %></p>
-<% else %>
-  <p><i class="far fa-comment" style="color: #48350e;"></i><%= link_to bookmark.post.comments.count, post_path(bookmark.post) %></p>
-<% end %>
-    <% if current_user == bookmark.user %>
-      <%= link_to "編集", edit_post_path(bookmark.post) %>
-      <%= link_to "削除", post_path(bookmark.post), method: :delete, data: { confirm: "削除しますか？" } %>
-    <% end %>
-    
-    
-
-  <% end %>
-<% else %>
-  <h4>まだ保存された投稿がありません。<br>
-  bookmarkしてみましょう！<br>
-  <%= link_to "投稿一覧へ", posts_path %></h4>
-<% end %>
+    </div>
+  </div>
+</div>

@@ -1,11 +1,11 @@
-<% if user.avatar.attached? %>
-  <%= image_tag user.avatar, size: "100x100" %><br>
-<% end %>
+
+<%= image_tag user.avatar, size: "100x100" %><br>
+
 <table class="table">
   <tbody>
     <tr>
       <th>氏名</th>
-      <th><%= link_to user.disply_name %></th>
+      <th><%= link_to user.disply_name, user_path(user) %></th>
     </tr>
     <tr>
       <th> &nbsp;&nbsp; </th>

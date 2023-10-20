@@ -1,93 +1,87 @@
-<h4><%= @post.user.disply_name %>さんの投稿</h4>
+<div class="container-fluid">
+  <div class="row">
+    <div class="col-3 pt-3">
+      <%= render 'public/users/info', user: @post.user %>
+      <div class="pt-5 mt-5">
+      <%= render "public/comments/form", post: @post, comment: @comment %>
+      </div>
+    </div>
+    <div class="col-9 pt-3">
+      <div style="text-align: center;">
+        <h4><%= @post.user.disply_name %>さんの投稿</h4>
+      </div>
 
-<p>投稿日時: <%= @post.created_at.strftime("%Y-%m-%d %H:%M:%S") %></p>
+      <p><%= @post.created_at.strftime("%Y/%m/%d") %> &nbsp;&nbsp; <%= @post.content %></p>
+      <p>ジャンル名:<%= @post.genre.name %></p>
+
+      <!-- 写真表示 -->
+      <div class="d-flex flex-wrap">
+        <% if @post.images.attached? %>
+          <% @post.images.each do |image| %>
+            <div class="mr-3 mb-3">
+              <%= image_tag image, size: "150x150" %>
+            </div>
+          <% end %>
+        <% end %><br>
+      </div>
+
+      <!-- ユーチューブ動画表示 -->
+      <div class="d-flex flex-wrap">
+        <% if @post.youtube_urls.any? %>
+          <% @post.youtube_urls.each do |youtube_url| %>
+            <div class="mr-3 mb-3">
+              <iframe width="224" height="126" src="https://www.youtube.com/embed/<%= youtube_url.path %>" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe><br>
+            </div>
+          <% end %>
+        <% end %>
+      </div>
+
+      <% if current_user == @post.user %>
+  <div class="text-right">
+    <%= link_to "編集", edit_post_path(@post), class: "btn btn-success" %>
+    <%= link_to "削除", post_path(@post), method: :delete, class: "btn btn-danger", data: { confirm: "削除しますか？" } %>
+  </div>
+<% end %><br>
 
 
-
-    <%= image_tag @post.user.get_avatar(70,70)%>
-
-  <p>ユーザーネーム<%= link_to @post.user.disply_name, user_path(@post.user) %></p>
-
-
-
-  <p>ジャンル名:<%= @post.genre.name %></p>
-
-
-
-  <p>コメント<%= @post.content %></p><br>
-
-  <% if @post.images.attached? %>
-    <% @post.images.each do |image| %>
-      <%= image_tag image, size: "150x150" %>
-    <% end %>
-  <% end %><br>
-
-  <% if @post.youtube_urls.any? %>
-  <% @post.youtube_urls.each do |youtube_url| %>
-    <iframe width="224" height="126" src="https://www.youtube.com/embed/<%= youtube_url.path %>" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe><br>
-  <% end %>
-<% end %>
-
-  <% if current_user == @post.user %>
-    <%= link_to "編集", edit_post_path(@post) %>
-    <%= link_to "削除", post_path(@post), method: :delete, data: { confirm: "削除しますか？" } %>
-  <% end %><br>
-
-<% if @post.favorited_by?(current_user) %>
-    <p>
+<div class="d-flex">
+  <div class="mr-3">
+    <% if @post.favorited_by?(current_user) %>
       <%= link_to post_favorites_path(@post), method: :delete do %>
         <i class="fas fa-heart" style="color: #eca7df;"></i>
         <%= @post.favorites.count %>
       <% end %>
-    </p>
     <% else %>
-    <p>
       <%= link_to post_favorites_path(@post), method: :post do %>
         <i class="far fa-heart" style="color: #eca7df;"></i>
         <%= @post.favorites.count %>
       <% end %>
-    </p>
-  <% end %>
+    <% end %>
+  </div>
 
+  <div class="mr-3">
     <% if @post.bookmarked_by?(current_user) %>
-    <p>
       <%= link_to post_bookmarks_path(@post), method: :delete do %>
         <i class="fas fa-bookmark" style="color: #5884d0;"></i>
-
       <% end %>
-    </p>
     <% else %>
-    <p>
       <%= link_to post_bookmarks_path(@post), method: :post do %>
         <i class="far fa-bookmark" style="color: #5884d0;"></i>
-
       <% end %>
-    </p>
-  <% end %>
+    <% end %>
+  </div>
 
-<div>
-  <div id="comment_counter">
-    <%= render "public/comments/counter", post: @post %>
+  <div>
+    <div id="comment_counter">
+      <%= render "public/comments/counter", post: @post %>
+    </div>
   </div>
-  <!--<#% if current_user.commented_on?(@post) %>-->
-  <!--  <p><i class="fas fa-comment" style="color: #48350e;"></i><%#= link_to @post.comments.count, post_path(@post) %></p>-->
-  <!--<%# else %>-->
-  <!--  <p><i class="far fa-comment" style="color: #48350e;"></i><%#= link_to @post.comments.count, post_path(@post) %></p>-->
-  <!--<%# end %>-->
-  
-  <div id="comment_index">
-    <%= render "public/comments/index", post: @post %>
-  </div>
-  <!--<%# @post.comments.each do |comment| %>-->
-  <!--  <p><%#= image_tag comment.user.get_avatar(50,50) %>-->
-  <!--  <%#= comment.created_at.strftime('%Y/%m/%d') %><%#= comment.content %></p>-->
-  <!--<%# end %>-->
 </div>
 
-<%= render "public/comments/form", post: @post, comment: @comment %>
-<!--<div>-->
-<!--  <%#= form_with model: [@post, @comment] do |f| %>-->
-<!--    <%#= f.text_area :content, placeholder: "コメントをここに入力" %>-->
-<!--    <%#= f.submit "送信する" %>-->
-<!--  <%# end %>-->
-<!--</div>-->
+<div id="comment_index">
+  <%= render "public/comments/index", post: @post %>
+</div>
+
+
+ </div>
+</div>

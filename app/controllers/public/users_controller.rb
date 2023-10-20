@@ -6,6 +6,7 @@ class Public::UsersController < ApplicationController
     @user = User.find(params[:id])
     @posts = @user.posts.order(updated_at: :desc)
     @genres = Genre.all
+    # @genres = @posts.genre
   end
 
   def edit

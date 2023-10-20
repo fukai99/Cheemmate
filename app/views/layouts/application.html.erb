@@ -65,7 +65,7 @@
                 <%= link_to "新規登録", new_user_registration_path, class: "nav-link text-light" %>
               </li>
               <li class="nav-item">
-                <%= link_to "ゲストログイン", users_guest_sign_in_path, class: "nav-link text-light" %>
+                <%= link_to "ゲストログイン", users_guest_sign_in_path, class: "nav-link text-light", method: :post  %>
               </li>
             <% end %>
           </ul>

@@ -1,7 +1,28 @@
-
+<table class="table col-12 mx-auto table-hover">
+  <thead>
+<tr>
+  <th> &nbsp;&nbsp; </th>
+  <th>日時</th>
+  <th>氏名</th>
+  <th>コメント</th>
+</tr>
+</thead>
+  <tbody>
+    <% if post.comments.present? %>
+      <h4>コメント(<%= post.comments.count %>)</h4>
 <% post.comments.each do |comment| %>
-  <p><%= image_tag comment.user.get_avatar(50,50) %>
-  <%= comment.user.disply_name %>
-  <%= comment.created_at.strftime('%Y/%m/%d') %><%= comment.content %></p>
+<tr>
+  <td><%= image_tag comment.user.get_avatar(50,50) %></td>
+  <td><%= comment.created_at.strftime('%Y/%m/%d') %></td>
+  <td><%= comment.user.disply_name %></td>
+  <td><%= comment.content %></td>
+  </tr>
 <% end %>
+<% else %>
+      <tr>
+        <td colspan="4" style="text-align: center; font-size: 20px;">この投稿にはまだコメントがありません。</td>
+      </tr>
+    <% end %>
+</tbody>
+</table>
 <!--@post=post-->
