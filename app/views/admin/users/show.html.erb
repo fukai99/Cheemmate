@@ -45,10 +45,12 @@
               <!-- ユーチューブ動画表示 -->
               <div class="col-12">
                 <div class="d-flex flex-wrap">
-                  <% post.youtube_urls.each do |youtube_url| %>
-                    <div class="mr-3 mb-3">
-                      <iframe width="224" height="126" src="https://www.youtube.com/embed/<%= youtube_url.path %>" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+                  <% if post.youtube_url.present? %>
+                    <% post.youtube_url.path.split(/\R/).each do |url| %>
+                      <div class="mr-3 mb-3">
+                        <iframe width="224" height="126" src="https://www.youtube.com/embed/<%= url.last(11) %>" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
                     </div>
+                  <% end %>
                   <% end %>
                 </div>
               </div>

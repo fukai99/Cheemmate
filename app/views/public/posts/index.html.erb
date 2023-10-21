@@ -1,7 +1,4 @@
 <div class="container-fluid">
-  <div class=" row float-right">
-    <%= render 'public/searches/search' %>
-  </div>
   <div class="row">
     <div class="col-2">
       <table class="table table-hover table-bordered mt-5">
@@ -21,52 +18,80 @@
     </div>
 
     <div class="col-10">
-      <div class="text-center">
-        <h2>投稿一覧</h2>
+      <div class="pt-3 pb-3 lines_search">
+        <div class="searches_form">
+          <%= render 'public/searches/search' %>
+        </div>
+        <div class="text-center">
+          <h2>投稿一覧</h2>
+        </div>
       </div>
-      <% @posts.each do |post| %>
-        <div class="row border-bottom">
-          <div class="col-3">
-            <%= render 'public/users/info', user: post.user %>
-          </div>
 
-          <div class="col-7">
-            <p><%= post.created_at.strftime("%Y/%m/%d") %> &nbsp;&nbsp; <%= post.content %></p>
-            <p>ジャンル名:<%= post.genre.name %></p>
+      <% if @posts.present? %>
+        <% @posts.each do |post| %>
+          <div class="row border-bottom">
+            <div class="col-3">
+              <%= render 'public/users/info', user: post.user %>
+            </div>
+            <div class="col-7">
+              <p><%= post.created_at.strftime("%Y/%m/%d") %> &nbsp;&nbsp; <%= post.content %></p>
+              <p>ジャンル名:<%= post.genre.name %></p>
 
-            <!-- 写真 -->
-            <div class="d-flex flex-wrap">
-              <% if post.images.attached? %>
-                <% post.images.each do |image| %>
-                  <div class="mr-3 mb-3">
-                    <%= image_tag image, size: "150x150" %>
-                  </div>
+              <!-- 写真 -->
+              <div class="d-flex flex-wrap">
+                <% if post.images.attached? %>
+                  <% post.images.each do |image| %>
+                    <div class="mr-3 mb-3">
+                      <%= image_tag image, size: "150x150" %>
+                    </div>
+                  <% end %>
                 <% end %>
-              <% end %>
-            </div><br>
+              </div><br>
 
-            <!-- ユーチューブ -->
-            <div class="d-flex flex-wrap">
-              <% post.youtube_urls.each do |youtube_url| %>
-                <div class="mr-3 mb-3">
-                  <iframe width="224" height="126" src="https://www.youtube.com/embed/<%= youtube_url.path %>"
-                    frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+              <!-- ユーチューブ -->
+              <div class="d-flex flex-wrap">
+                <% if post.youtube_url.present? %>
+                  <% post.youtube_url.path.split(/\R/).each do |url| %>
+                    <div class="mr-3 mb-3">
+                      <iframe width="224" height="126" src="https://www.youtube.com/embed/<%= url.last(11) %>"
+                        frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+                    </div>
+                  <% end %>
+                <% end %>
+              </div><br>
+
+              <div class="d-flex">
+                <div class="mr-3">
+                  <div id="favorite_buttons_<%= post.id %>" >
+                    <%= render "public/favorites/favorite", post: post %>
+                  </div>
                 </div>
-              <% end %>
-            </div><br>
-            <%= render 'asynchronous', post: post %>
-
-            <!-- 編集と削除ボタン -->
-            <% if current_user == post.user %>
-              <div class="float-right">
-                <div class="btn-group">
-                  <%= link_to "編集", edit_post_path(post), class: "btn btn-success" %>
-                  <%= link_to "削除", post_path(post), method: :delete, class: "btn btn-danger", data: { confirm: "削除しますか？" } %>
+                <div class="mr-3">
+                  <div id="bookmark_buttons_<%= post.id %>" >
+                    <%= render "public/bookmarks/bookmark", post: post %>
+                  </div>
+                </div>
+                <div>
+                  <div id="comment_counter">
+                    <%= render "public/comments/counter", post: post %>
+                  </div>
                 </div>
               </div>
-            <% end %>
+
+              <!-- 編集と削除ボタン -->
+              <% if current_user == post.user %>
+                <div class="float-right mb-3">
+                  <div class="btn-group">
+                    <%= link_to "編集", edit_post_path(post), class: "btn btn-success" %>
+                    <%= link_to "削除", post_path(post), method: :delete, class: "btn btn-danger", data: { confirm: "削除しますか？" } %>
+                  </div>
+                </div>
+              <% end %>
+            </div>
           </div>
-        </div>
+        <% end %>
+      <% else %>
+        該当する投稿はありませんでした
       <% end %>
     </div>
   </div>

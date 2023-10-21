@@ -21,6 +21,7 @@
         </button>
         <div class="collapse navbar-collapse" id="navbarNavDropdown">
           <ul class="navbar-nav ml-auto">
+            
 
             <% if user_signed_in? %>
 
@@ -41,6 +42,7 @@
               <li class="nav-item">
                 <%= link_to "ログアウト", destroy_user_session_path, method: :delete,class:"nav-link text-light" %>
               </li>
+              
 
             <% elsif admin_signed_in? %>
              <!--管理者ログイン時のメニュー -->
@@ -55,7 +57,8 @@
               </li>
               <li class="nav-item">
                 <%= link_to 'ログアウト', destroy_admin_session_path, method: :delete,class:"nav-link text-light" %>
-              </li>
+              </li> 
+            <% elsif params[:controller] == "admin/admins/sessions" && params[:action]== "new" %>
             <% else %>
               <!-- ログイン前 -->
               <li>
@@ -72,7 +75,6 @@
         </div>
       </div>
     </nav>
-
     <%= flash[:notice] %>
     <%= yield %>
 

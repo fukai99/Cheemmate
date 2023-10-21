@@ -1,7 +1,4 @@
 class User < ApplicationRecord
-
-  # Include default devise modules. Others available are:
-  # :confirmable, :lockable, :timeoutable, :trackable and :omniauthable
   devise :database_authenticatable, :registerable,
          :recoverable, :rememberable, :validatable
 
@@ -20,6 +17,7 @@ class User < ApplicationRecord
     super && (is_deleted == false)
   end
 
+  # ユーザーのアバター
   def get_avatar(width, height)
     unless avatar.attached?
       file_path = Rails.root.join('app/assets/images/no_image.jpg')
@@ -32,18 +30,6 @@ class User < ApplicationRecord
     comments.exists?(post_id: post.id)
   end
 
-  # 検索方法分岐
-  # def self.looks(search, word)
-  #   @user = User.where("disply_name LIKE?","%#{word}%").
-  #       or(where("first_name LIKE?","%#{word}%")).
-  #       or(where("family_name LIKE?","%#{word}%"))
-  #   if @user.empty?
-  #     @user = User.all
-  #   end
-  # end
-    # return @user
-  # end
-  
   def self.looks(search, word, is_admin)
     if is_admin
       @users = where("disply_name LIKE ?", "%#{word}%")
@@ -51,7 +37,6 @@ class User < ApplicationRecord
                 .or(where("family_name LIKE ?", "%#{word}%"))
     else
       @users = where("disply_name LIKE ?", "%#{word}%")
-      
     end
 
     if @users.empty?
@@ -61,7 +46,7 @@ class User < ApplicationRecord
     return @users
   end
 
-
+  # ゲスト
   GUEST_USER_EMAIL = "guest@example.com"
 
   def self.guest
@@ -78,8 +63,4 @@ class User < ApplicationRecord
   def guest_user?
     email == GUEST_USER_EMAIL
   end
-
-
-
-
 end

@@ -27,10 +27,10 @@
 
       <!-- ユーチューブ動画表示 -->
       <div class="d-flex flex-wrap">
-        <% if @post.youtube_urls.any? %>
-          <% @post.youtube_urls.each do |youtube_url| %>
+        <% if @post.youtube_url.present? %>
+          <% @post.youtube_url.path.split(/\R/).each do |url| %>
             <div class="mr-3 mb-3">
-              <iframe width="224" height="126" src="https://www.youtube.com/embed/<%= youtube_url.path %>" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe><br>
+              <iframe width="224" height="126" src="https://www.youtube.com/embed/<%= url.last(11) %>" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe><br>
             </div>
           <% end %>
         <% end %>
@@ -46,31 +46,14 @@
 
 <div class="d-flex">
   <div class="mr-3">
-    <!--<%# = link_to post_favorites_path(@post), method: :delete do %>-->
-    <!--    <i class="fas fa-heart" style="color: #eca7df;"></i>-->
-    <!--    <%#= @post.favorites.count %>-->
-    <!--  <%# end %>-->
-    <!--<%# else %>-->
-    <!--  <%#= link_to post_favorites_path(@post), method: :post do %>-->
-    <!--    <i class="far fa-heart" style="color: #eca7df;"></i>-->
-    <!--    <#%= @post.favorites.count %>-->
-    <!--  <%# end %>-->
-    <!--<%# end %>-->
+    
     <div id="favorite_buttons_<%= @post.id %>" >
             <%= render "public/favorites/favorite", post: @post %>
         </div>
   </div>
 
   <div class="mr-3">
-    <!--<%# if @post.bookmarked_by?(current_user) %>-->
-    <!--  <%#= link_to post_bookmarks_path(@post), method: :delete do %>-->
-    <!--    <i class="fas fa-bookmark" style="color: #5884d0;"></i>-->
-    <!--  <%# end %>-->
-    <!--<%# else %>-->
-    <!--  <%#= link_to post_bookmarks_path(@post), method: :post do %>-->
-    <!--    <i class="far fa-bookmark" style="color: #5884d0;"></i>-->
-    <!--  <%# end %>-->
-    <!--<%# end %>-->
+    
     <div id="bookmark_buttons_<%= @post.id %>" >
             <%= render "public/bookmarks/bookmark", post: @post %>
         </div>

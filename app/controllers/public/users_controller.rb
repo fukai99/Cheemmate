@@ -4,9 +4,15 @@ class Public::UsersController < ApplicationController
 
   def show
     @user = User.find(params[:id])
-    @posts = @user.posts.order(updated_at: :desc)
+    
+    # 検索で絞り込んだ時
+    if params[:genre_id]
+      @posts =@user.posts.where(genre_id: params[:genre_id]).order(created_at: :desc)
+    else
+      @posts = @user.posts.order(created_at: :desc)
+    end
+    
     @genres = Genre.all
-    # @genres = @posts.genre
   end
 
   def edit

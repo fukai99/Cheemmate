@@ -30,6 +30,7 @@ class Admin::UsersController < ApplicationController
   end
 
   private
+  
   def user_params
     params.require(:user).permit(:family_name, :first_name, :disply_name, :family_relationship, :is_member)
   end

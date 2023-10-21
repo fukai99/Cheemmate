@@ -1,7 +1,5 @@
-<div class="float-right">
-  <%= render 'public/searches/search' %>
-</div>
 <div class="container-fluid">
+
   <div class="row">
     <div class="col-3 mt-3">
       <%= render 'info', user: @user %>
@@ -14,7 +12,7 @@
         <tbody>
           <% @genres.each do |genre| %>
             <tr>
-              <td><%= link_to genre.name, posts_path(genre_id: genre.id) %></td>
+              <td><%= link_to genre.name, user_path(genre_id: genre.id) %></td>
             </tr>
           <% end %>
         </tbody>
@@ -22,8 +20,14 @@
     </div>
 
     <div class="col-9">
-      <div class="text-center pt-3 pb-3">
+      <div class="pt-3 pb-3 lines_search">
+        
+        <div class="searches_form">
+          <%= render 'public/searches/search' %>
+        </div>
+        <div class="text-center">
         <h4><%= @user.disply_name %>さんの投稿一覧</h4>
+        </div>
       </div>
       <% if @posts.any? %>
         <% @posts.each do |post| %>
@@ -44,22 +48,44 @@
 
             <!-- ユーチューブ動画表示 -->
             <div class="d-flex flex-wrap">
-              <% post.youtube_urls.each do |youtube_url| %>
+              <% if post.youtube_url.present? %>
+              <% post.youtube_url.path.split(/\R/).each do |url| %>
                 <div class="mr-3 mb-3">
-                  <iframe width="224" height="126" src="https://www.youtube.com/embed/<%= youtube_url.path %>" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+                  <iframe width="224" height="126" src="https://www.youtube.com/embed/<%= url.last(11) %>" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
                 </div>
               <% end %>
-            </div>
+              <% end %>
+            </div><br>
 
-            <%= render 'public/posts/asynchronous', post: post %>
+           <div class="d-flex">
+  <div class="mr-3">
+    
+    <div id="favorite_buttons_<%= post.id %>" >
+            <%= render "public/favorites/favorite", post: post %>
+        </div>
+  </div>
+
+  <div class="mr-3">
+    
+    <div id="bookmark_buttons_<%= post.id %>" >
+            <%= render "public/bookmarks/bookmark", post: post %>
+        </div>
+  </div>
+
+  <div>
+    <div id="comment_counter">
+      <%= render "public/comments/counter", post: post %>
+    </div>
+  </div>
+</div>
 
             <!-- 編集と削除ボタン -->
             <% if current_user == post.user %>
-              <div class="float-right">
-                <div class="btn-group">
+              <div class="text-right">
+                
                   <%= link_to "編集", edit_post_path(post), class: "btn btn-success" %>
                   <%= link_to "削除", post_path(post), method: :delete, class: "btn btn-danger", data: { confirm: "削除しますか？" } %>
-                </div>
+                
               </div>
             <% end %>
           </div>

@@ -2,7 +2,7 @@ class Public::PostsController < ApplicationController
   before_action :authenticate_user!
 
   def new
-     @post = Post.new
+    @post = Post.new
   end
 
   def create
@@ -31,14 +31,27 @@ class Public::PostsController < ApplicationController
 
   def update
     @post = Post.find(params[:id])
+
+    # 新しい画像を追加
+    if params[:post][:new_images].present?
+      @post.images.attach(params[:post][:new_images])
+    end
+
+    # 選択された画像を削除
+    if params[:post][:image_ids].present?
+      params[:post][:image_ids].each do |image_id|
+        image = @post.images.find(image_id)
+        image.purge
+      end
+    end
+
     if @post.update(post_params)
-      flash[:notice] = "変更しました."
+      flash[:success] = "編集しました"
       redirect_to user_path(current_user)
     else
       flash[:notice] = "変更に失敗しました。"
       render :edit
     end
-
   end
 
   def destroy
@@ -48,10 +61,10 @@ class Public::PostsController < ApplicationController
   end
 
   def index
-    if(params[:genre_id])
-     @posts = Post.where(genre_id: params[:genre_id]).order(created_at: :desc)
+    if params[:genre_id]
+      @posts = Post.where(genre_id: params[:genre_id]).order(created_at: :desc)
     else
-     @posts = Post.order(created_at: :desc)
+      @posts = Post.order(created_at: :desc)
     end
      @genres = Genre.all
   end

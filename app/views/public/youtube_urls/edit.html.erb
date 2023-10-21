@@ -1,11 +1,12 @@
 <%= form_with model: @youtube_url, url: post_youtube_urls_path(@post.id), method: :patch do |f| %>
 
   <% if @post.images.present? %>
-    <% @post.youtube_urls.each do |youtube_url| %>
-      <iframe width="224" height="126" src="https://www.youtube.com/embed/<%= youtube_url.path %>" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe><br>
+    <% @youtube_url.path.split(/\R/).each do |url| %>
+      <iframe width="224" height="126" src="https://www.youtube.com/embed/<%= url.last(11) %>" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe><br>
+      https://www.youtube.com/embed/<%= url.last(11) %><br>
     <% end %>
   <% end %>
-  
+
   <h4>Youtube URL(※複数の動画をつけたい場合は改行して入力してください)</h4>
   <%= f.text_area :path, rows: 5, style: "width: 50%;" %>
 
