@@ -3,10 +3,13 @@
     <div class="col-3 pt-3">
       <%= render 'admin/users/user_info', user: @post.user %>
     </div>
+    
     <div class="col-9">
+      
       <!-- ポスト情報表示 -->
-        <p><%= @post.created_at.strftime("%Y/%m/%d") %> &nbsp;&nbsp; <%= @post.content %></p>
+      <p><%= @post.created_at.strftime("%Y/%m/%d") %> &nbsp;&nbsp; <%= @post.content %></p>
       <p>ジャンル名:<%= @post.genre.name %></p>
+      
       <!-- 写真表示 -->
       <div class="d-flex flex-wrap">
         <% if @post.images.attached? %>
@@ -17,45 +20,46 @@
           <% end %>
         <% end %><br>
       </div>
+      
       <!-- ユーチューブ動画表示 -->
       <div class="d-flex flex-wrap">
-        <% @post.youtube_urls.each do |youtube_url| %>
-          <div class="mr-3 mb-3">
-            <iframe width="224" height="126" src="https://www.youtube.com/embed/<%= youtube_url.path %>" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
-          </div>
+        <% if @post.youtube_url.present? %>
+          <% @post.youtube_url.path.split(/\R/).each do |url| %>
+            <div class="mr-3 mb-3">
+              <iframe width="224" height="126" src="https://www.youtube.com/embed/<%= url.last(11) %>" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+            </div>
+          <% end %>
         <% end %>
       </div>
 
       <!-- 投稿についたコメント -->
-<table class="table col-12 mx-auto table-hover">
-  <thead>
-    <tr>
-      <th>日時</th>
-      <th>氏名</th>
-      <th>コメント</th>
-      <th>削除</th>
-    </tr>
-  </thead>
-  <tbody>
-    <% if @post.comments.present? %>
-      <h4>コメント(<%= @post.comments.count %>)</h4>
-      <% @post.comments.each do |comment| %>
-        <tr>
-          <td><%= comment.created_at.strftime('%Y/%m/%d') %></td>
-          <td><%= comment.user.family_name %> &nbsp;&nbsp; <%= comment.user.first_name %></td>
-          <td><%= comment.content %></td>
-          <td><%= link_to "削除", admin_comment_path(comment), method: :delete, class: "btn btn-danger", data: { confirm: "削除しますか？" } %></td>
-        </tr>
-      <% end %>
-    <% else %>
-      <tr>
-        <td colspan="4" style="text-align: center; font-size: 20px;">この投稿にはまだコメントがありません。</td>
-      </tr>
-    <% end %>
-  </tbody>
-</table>
-
-
+      <table class="table col-12 mx-auto table-hover">
+        <thead>
+          <tr>
+            <th>日時</th>
+            <th>氏名</th>
+            <th>コメント</th>
+            <th>削除</th>
+          </tr>
+        </thead>
+        <tbody>
+          <% if @post.comments.present? %>
+            <h4>コメント(<%= @post.comments.count %>)</h4>
+            <% @post.comments.each do |comment| %>
+              <tr>
+                <td><%= comment.created_at.strftime('%Y/%m/%d') %></td>
+                <td><%= comment.user.family_name %> &nbsp;&nbsp; <%= comment.user.first_name %></td>
+                <td><%= comment.content %></td>
+                <td><%= link_to "削除", admin_comment_path(comment), method: :delete, class: "btn btn-danger", data: { confirm: "削除しますか？" } %></td>
+              </tr>
+            <% end %>
+          <% else %>
+            <tr>
+              <td colspan="4" style="text-align: center; font-size: 20px;">この投稿にはまだコメントがありません。</td>
+            </tr>
+          <% end %>
+        </tbody>
+      </table>
     </div>
   </div>
 </div>

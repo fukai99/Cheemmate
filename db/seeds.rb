@@ -1,5 +1,4 @@
 Admin.find_or_create_by!(email: "123@456") do |admin|
-  admin.name = "山田"
   admin.password = "123456"
 end
 
@@ -19,7 +18,7 @@ hatsu_post = Post.find_or_create_by!(content: "初投稿です") do |post|
   post.genre = a_genre
 end
 
-hatsu_post.youtube_urls.find_or_create_by!(path: "SZXZq-0YS48")
-hatsu_post.youtube_urls.find_or_create_by!(path: "TQMbvJNRpLE")
+YoutubeUrl.find_or_create_by!(path: "OJmSwcww-pw", post_id: hatsu_post.id)
+YoutubeUrl.find_or_create_by!(path: "iBDPW82ouCY", post_id: hatsu_post.id)
 
 puts "データの作成が完了しました"

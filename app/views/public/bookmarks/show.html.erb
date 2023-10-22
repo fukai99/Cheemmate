@@ -1,30 +1,24 @@
-
 <div class="container-fluid">
   <div class="row">
     <div class="col-12">
       <div class="pt-3 pb-3 lines_search">
-        
         <div class="searches_form">
           <%= render 'public/searches/search' %>
         </div>
-      <div class="text-center pt-3 pb-3">
-        <h4><%= link_to @user.disply_name %>さんのBookmark一覧</h4>
-      </div>
+        <div class="text-center pt-3 pb-3">
+          <h4><%= link_to @user.disply_name %>さんのBookmark一覧</h4>
+        </div>
       </div>
       <% if @bookmarks.any? %>
         <% @bookmarks.each do |bookmark| %>
-        
           <div class="row border-bottom pb-3">
-            
             <div class="col-3 pt-3">
               <%= render 'public/users/info', user: bookmark.user %>
             </div>
-          
             <div class="col-7 pt-3">
-              
               <p><%= bookmark.post.created_at.strftime("%Y/%m/%d") %> &nbsp;&nbsp; <%= bookmark.post.content %></p>
               <p>ジャンル:<%= bookmark.post.genre.name %></p>
-    
+
               <!-- 写真 -->
               <div class="d-flex flex-wrap">
                 <% if bookmark.post.images.attached? %>
@@ -38,37 +32,32 @@
 
               <!-- ユーチューブ -->
               <div class="d-flex flex-wrap">
-                <% if  bookmark.post.youtube_url.present? %>
-                <% bookmark.post.youtube_url.path.split(/\R/).each do |url| %>
-                  <div class="mr-3 mb-3">
-                    <iframe width="224" height="126" src="https://www.youtube.com/embed/<%= url.last(11) %>" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe><br>
-                  </div>
-                <% end %>
+                <% if bookmark.post.youtube_url.present? %>
+                  <% bookmark.post.youtube_url.path.split(/\R/).each do |url| %>
+                    <div class="mr-3 mb-3">
+                      <iframe width="224" height="126" src="https://www.youtube.com/embed/<%= url.last(11) %>" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe><br>
+                    </div>
+                  <% end %>
                 <% end %>
               </div><br>
-            
-              
+
               <div class="d-flex">
-  <div class="mr-3">
-    
-    <div id="favorite_buttons_<%= bookmark.post.id %>" >
-            <%= render "public/favorites/favorite", post: bookmark.post %>
-        </div>
-  </div>
-
-  <div class="mr-3">
-    
-    <div id="bookmark_buttons_<%= bookmark.post.id %>" >
-            <%= render "public/bookmarks/bookmark", post: bookmark.post %>
-        </div>
-  </div>
-
-  <div>
-    <div id="comment_counter">
-      <%= render "public/comments/counter", post: bookmark.post %>
-    </div>
-  </div>
-</div>
+                <div class="mr-3">
+                  <div id="favorite_buttons_<%= bookmark.post.id %>">
+                    <%= render "public/favorites/favorite", post: bookmark.post %>
+                  </div>
+                </div>
+                <div class="mr-3">
+                  <div id="bookmark_buttons_<%= bookmark.post.id %>">
+                    <%= render "public/bookmarks/bookmark", post: bookmark.post %>
+                  </div>
+                </div>
+                <div>
+                  <div id="comment_counter">
+                    <%= render "public/comments/counter", post: bookmark.post %>
+                  </div>
+                </div>
+              </div>
 
               <!-- 編集と削除ボタン -->
               <% if current_user == bookmark.user %>
@@ -79,15 +68,13 @@
                   </div>
                 </div>
               <% end %>
-              
             </div>
-          
-          </div>  
+          </div>
         <% end %>
       <% else %>
         <h4>まだ保存された投稿がありません。<br>
           bookmarkしてみましょう！<br>
-        <%= link_to "投稿一覧へ", posts_path %></h4>
+          <%= link_to "投稿一覧へ", posts_path %></h4>
       <% end %>
     </div>
   </div>

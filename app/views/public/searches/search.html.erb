@@ -1,5 +1,7 @@
-
-  <h2>検索結果</h2>
+<div class="text-right mt-3">
+  <%= render 'public/searches/search' %>
+</div>
+<h2>検索結果</h2>
 
 <table class="table table-hover table-inverse">
   <!--検索対象モデルがUserの時 -->
@@ -14,7 +16,7 @@
       <% end %>
     </tbody>
   <% else %>
-    <!--検索対象モデルがUserではない時(= 検索対象モデルがBookの時) -->
+    <!--検索対象モデルがpostの時 -->
     <tbody>
       <% @posts.each do |post| %>
         <tr>
@@ -26,8 +28,10 @@
                 <% end %>
               <% end %>
           </td>
-          <td><% post.youtube_urls.each do |youtube_url| %>
-                <iframe width="224" height="126" src="https://www.youtube.com/embed/<%= youtube_url.path %>" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+          <td> <% if post.youtube_url.present? %>
+                  <% post.youtube_url.path.split(/\R/).each do |url| %>
+                <iframe width="224" height="126" src="https://www.youtube.com/embed/<%= url.last(11) %>" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+              <% end %>
               <% end %>
           </td>
           <td><% if post.comments.count > 0 %>

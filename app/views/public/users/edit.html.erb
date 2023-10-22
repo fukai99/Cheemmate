@@ -1,31 +1,27 @@
-
+<div class="container pt-5">
   <%= form_with model: @user do |f| %>
-  <div class="field">
-    <%= f.label :disply_name %><br/>
-    <%= f.text_field :disply_name, autofocus: true, autocomplete: "disply_name" %>
-  </div>
-  
-  <div class="field">
-    <%= f.label :family_relationship %><br/>
-    <%= f.text_field :family_relationship, autofocus: true, autocomplete: "family_relationship" %>
-  </div>
-  
-  <div class="field">
-    <%= f.label :アイコン画像 %><br/>
-    <%= f.file_field :avatar, accept: "image/*" %>
-  </div>
-  
-  <p>本人か</p>
-  <%= f.radio_button :is_member, true %>
-  <%= f.label :is_member, "生徒" %>
-  <%= f.radio_button :is_member, false%>
-  <%= f.label :is_member, "家族" %>
- 
-  <%= f.submit "編集" %>
-<% end %>
-  
-  
+    <div class="field mb-5">
+      <h5><%= f.label :表示名 %></h5>
+      <%= f.text_field :disply_name, autofocus: true, autocomplete: "disply_name" %>
+    </div>
 
-  
+    <div class="field mb-5">
+      <h5><%= f.label :アイコン画像 %></h5>
+      <%= f.file_field :avatar, accept: "image/*" %>
+    </div>
 
-  
+    <div class="mb-5">
+      <%= f.radio_button :is_member, true %>
+      <%= f.label :is_member, "生徒" %>
+      <%= f.radio_button :is_member, false%>
+      <%= f.label :is_member, "家族" %>
+    </div>
+
+    <%= f.submit "編集", class: "btn btn-info" %>
+  <% end %>
+</div>
+
+
+
+
+

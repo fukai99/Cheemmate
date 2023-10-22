@@ -30,6 +30,7 @@ class User < ApplicationRecord
     comments.exists?(post_id: post.id)
   end
 
+   # 検索方法分岐
   def self.looks(search, word, is_admin)
     if is_admin
       @users = where("disply_name LIKE ?", "%#{word}%")
