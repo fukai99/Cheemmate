@@ -13,7 +13,7 @@
         <% @bookmarks.each do |bookmark| %>
           <div class="row border-bottom pb-3">
             <div class="col-3 pt-3">
-              <%= render 'public/users/info', user: bookmark.user %>
+              <%= render 'public/users/info', user: bookmark.post.user %>
             </div>
             <div class="col-7 pt-3">
               <p><%= bookmark.post.created_at.strftime("%Y/%m/%d") %> &nbsp;&nbsp; <%= bookmark.post.content %></p>

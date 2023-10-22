@@ -1,3 +1,6 @@
+<div class="text-right pt-3 pr-3">
+  <h5 style="color: red;">※動画を編集する際は動画から編集してください</h5>
+</div>
 <div class="container mt-2">
   <%= form_with model: @post, url: post_path(@post), method: :patch do |f| %>
     <div class="mt-3">
@@ -22,15 +25,11 @@
       </div>
     <% end %>
 
-    <% if @post.youtube_url.nil? %>
-      <div class="mt-3">
-        <h5><%= link_to "動画URLを追加する", new_post_youtube_urls_path(@post.id) %></h5>
-      </div>
-    <% else %>
+    
       <div class="mt-3">
         <h5><%= link_to "動画URLを編集する", edit_post_youtube_urls_path(@post.id) %></h5>
       </div>
-    <% end %>
+    
 
     <div class="mt-3">
       <h4>ジャンル</h4>

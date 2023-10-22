@@ -19,7 +19,7 @@ Rails.application.routes.draw do
     root to: 'homes#top'
     resources :users, only: [:show, :edit, :update,]
     resources :posts, only: [:index, :update, :new, :destroy, :edit, :create, :show] do
-      resource :youtube_urls, only: [:new, :create, :edit, :update]
+      resource :youtube_urls, only: [:edit, :update]
       resource :bookmarks, only: [:show, :create, :destroy]
       resources :comments, only: [:create, :destroy]
       resource :favorites, only: [:create, :destroy]
