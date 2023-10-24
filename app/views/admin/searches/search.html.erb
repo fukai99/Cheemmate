@@ -21,7 +21,6 @@
         </tr>
       <% end %>
     </tbody>
-
   <% else %>
     <!-- 検索対象モデルがPostの時-->
     <tbody>
@@ -30,22 +29,22 @@
         <th class="col-2">ユーザー</th>
         <th class="col-2">ジャンル</th>
         <th class="col-1">コメント</th>
-        <th class=colspan="5">投稿</th>
+        <th class="colspan-5">投稿</th>
       </tr>
 
       <% @posts.each do |post| %>
-
         <tr>
           <!-- 投稿の作成日時 -->
-           <th class="col-1"><%= post.created_at.strftime("%Y/%m/%d") %></td>
-           <th><%= link_to admin_user_path(post.user) do %>
-              <%= post.user.family_name %>
-              <%= post.user.first_name %><% end %></td>
+          <td class="col-1"><%= post.created_at.strftime("%Y/%m/%d") %></td>
+          <!-- 投稿のユーザー -->
+          <td><%= link_to admin_user_path(post.user) do %>
+            <%= post.user.family_name %> <%= post.user.first_name %>
+          <% end %></td>
           <!-- 投稿のジャンル名 -->
-           <th><%= post.genre.name %></td>
-           <th><%= post.content %></td>
-           <th>
-
+          <td><%= post.genre.name %></td>
+          <!-- 投稿のコメント -->
+          <td><%= post.content %></td>
+          <td>
             <!-- 投稿に添付された画像の表示 -->
             <% if post.images.attached? %>
               <% post.images.each do |image| %>
@@ -53,24 +52,17 @@
               <% end %>
             <% end %>
           </td>
-
-          <th>
+          <td>
             <!-- 投稿に添付されたYouTube動画の埋め込み -->
             <% post.youtube_urls.each do |youtube_url| %>
               <iframe width="224" height="126" src="https://www.youtube.com/embed/<%= youtube_url.path %>" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
             <% end %>
           </td>
-
-          <th>
-            <!-- 投稿についたコメントの表示 -->
-            <% if post.comments.count > 0 %>
-              <i class="fas fa-comment" style="color: #48350e;"></i>
-            <% else %>
-              <i class="far fa-comment" style="color: #48350e;"></i>
+          <td>
+            <%= link_to admin_post_path(post.id) do %>
+              <i class="fa-solid fa-arrow-right"></i>
             <% end %>
-            <%= link_to post.comments.count, admin_post_path(post.id) %>
           </td>
-
           <td>
             <!-- 投稿の削除ボタン -->
             <%= link_to "削除", admin_post_path(post), method: :delete, class: "btn btn-danger float-right", data: { confirm: "削除しますか？" } %>

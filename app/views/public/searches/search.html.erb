@@ -1,47 +1,54 @@
 <div class="text-right mt-3">
   <%= render 'public/searches/search' %>
 </div>
-<h2>検索結果</h2>
 
+<h2>検索結果</h2>
 <table class="table table-hover table-inverse">
-  <!--検索対象モデルがUserの時 -->
+  <!-- 検索対象モデルがUserの時 -->
   <% if @range == "User" %>
     <tbody>
       <% @users.each do |user| %>
         <tr>
-          <td><%= image_tag user.get_avatar(70,70) %></td>
-          <td><%= user.disply_name %></td>
+          <td><%= image_tag user.get_avatar(70, 70) %></td>
+          <td><%= link_to user.display_name, user_path(user) %></td>
           <td><%= user.is_member ? '生徒' : '家族' %></td>
         </tr>
       <% end %>
     </tbody>
   <% else %>
-    <!--検索対象モデルがpostの時 -->
+    <!-- 検索対象モデルがpostの時 -->
     <tbody>
       <% @posts.each do |post| %>
         <tr>
-          <td><%= post.created_at.strftime("%Y-%m-%d %H:%M:%S") %></td>
-          <td>ジャンル名:<%= post.genre.name %></td>
-          <td><% if post.images.attached? %>
-                <% post.images.each do |image| %>
-                  <%= image_tag image, size: "150x150" %>
-                <% end %>
+          <td style="width: 5%;"><%= post.created_at.strftime("%Y/%m/%d") %></td>
+          <td style="width: 10%;">ジャンル名:<%= post.genre.name %></td>
+          
+          <!-- 写真 -->
+          <td style="width: 40%;">
+            <% if post.images.attached? %>
+              <% post.images.each do |image| %>
+                <%= image_tag image, size: "150x150", style: "margin-bottom: 10px;" %>
               <% end %>
+            <% end %>
           </td>
-          <td> <% if post.youtube_url.present? %>
-                  <% post.youtube_url.path.split(/\R/).each do |url| %>
+          
+          <!-- 動画 -->
+          <td style="width: 40%;">
+            <% if post.youtube_url.present? %>
+              <% post.youtube_url.path.split(/\R/).each do |url| %>
                 <iframe width="224" height="126" src="https://www.youtube.com/embed/<%= url.last(11) %>" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
               <% end %>
-              <% end %>
+            <% end %>
           </td>
-          <td><% if post.comments.count > 0 %>
-                <i class="fas fa-comment" style="color: #48350e;"></i>
-              <% else %>
-                <i class="far fa-comment" style="color: #48350e;"></i>
-              <% end %><%= link_to post.comments.count, post_path(post.id) %></td>
-          <td><%= link_to "削除", post_path(post), method: :delete, class: "btn btn-danger float-right", data: { confirm: "削除しますか？" } %></td>
+          
+          <td style="width: 5%;">
+            <%= link_to post_path(post.id) do %>
+              <i class="fa-solid fa-arrow-right"></i>
+            <% end %>
+          </td>
         </tr>
       <% end %>
     </tbody>
   <% end %>
 </table>
+

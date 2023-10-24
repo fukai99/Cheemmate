@@ -12,6 +12,10 @@ class User < ApplicationRecord
 
   has_one_attached :avatar
   validates :is_member, inclusion: { in: [true, false] }
+  validates :family_name, presence: true
+  validates :first_name, presence: true
+  validates :disply_name, presence: true
+  validates :family_relationship, presence: true
 
   def active_for_authentication?
     super && (is_deleted == false)

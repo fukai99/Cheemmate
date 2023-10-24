@@ -1,23 +1,7 @@
 class Public::YoutubeUrlsController < ApplicationController
   before_action :authenticate_user!
 
-  # def new
-  #   @post = Post.find(params[:post_id])
-  #   @youtube_url = YoutubeUrl.new
-  # end
-
-  # def create
-  #   @post = Post.find(params[:post_id])
-  #   @youtube_url = YoutubeUrl.new(youtube_urls_params)
-  #   @youtube_url.post_id = @post.id
-  #   if @youtube_url.save!
-  #     flash[:notice] = "動画を追加しました。"
-  #     redirect_to edit_post_path(@post.id)
-  #   else
-  #     flash[:alert] = "動画の追加に失敗しました。"
-  #     render :new
-  #   end
-  # end
+  
 
   def edit
     @post = Post.find(params[:post_id])
@@ -26,7 +10,10 @@ class Public::YoutubeUrlsController < ApplicationController
 
   def update
     @post = Post.find(params[:post_id])
-    @youtube_url = @post.youtube_url
+    
+      
+    
+    @youtube_url = @post.youtube_url || @post.build_youtube_url
     if @youtube_url.update(youtube_urls_params)
       flash[:notice] = "動画を変更しました。"
       redirect_to edit_post_path(@post.id)

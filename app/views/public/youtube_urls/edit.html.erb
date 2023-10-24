@@ -1,7 +1,7 @@
 <div class="container-fluid pt-3">
-  <%= form_with model: @youtube_url, url: post_youtube_urls_path(@post.id), method: :patch do |f| %>
+  <%= form_with model: @youtube_url, url: post_youtube_urls_path(@post.id), method: :patch, scope: :youtube_url do |f| %>
     <div class="row">
-      <% if @post.images.present? %>
+      <% if @post.youtube_url.present? %>
         <% @youtube_url.path.split(/\R/).each do |url| %>
           <div class="col-md-4 pl-3 mt-5"> <!-- 3つの動画を1行に並べる -->
             <iframe width="224" height="126" src="https://www.youtube.com/embed/<%= url.last(11) %>" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe><br>

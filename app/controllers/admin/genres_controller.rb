@@ -1,6 +1,6 @@
 class Admin::GenresController < ApplicationController
   before_action :authenticate_admin!
-  
+
   def index
     #投稿
     @genre = Genre.new
@@ -12,7 +12,7 @@ class Admin::GenresController < ApplicationController
     @genre = Genre.new(genre_params)
     if @genre.save
       flash[:notice] = "ジャンルを追加しました。"
-      redirect_to '/admin/genres'
+      redirect_to admin_genres_path
     else
       flash[:notice] = "入力が必要です。"
       @genres = Genre.all
@@ -30,17 +30,18 @@ class Admin::GenresController < ApplicationController
        flash[:notice] = "変更しました。"
        redirect_to admin_genres_path
     else
-      flash[:notice] = "変更に失敗しました。"
+      flash[:notice] = "入力が必要です。"
       render :edit
     end
   end
-  
+
   def destroy
     genre = Genre.find(params[:id])
     genre.destroy
-    redirect_back(fallback_location: root_path)
+    flash[:notice] = "ジャンルを削除しました。"
+    redirect_to admin_genres_path
   end
-  
+
 private
 
   def genre_params

@@ -5,10 +5,16 @@ class Public::SearchesController < ApplicationController
     @range = params[:range]
     @word = params[:word]
 
-    if @range == "User"
-      @users = User.looks(params[:search], @word, false)
+    if @word.blank?
+      redirect_to request.referer
     else
-      @posts = Post.looks(@word)
+
+      if @range == "User"
+        @users = User.looks(params[:search], @word, false)
+      else
+        @posts = Post.looks(@word)
+      end
+
     end
   end
 end

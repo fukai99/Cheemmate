@@ -7,21 +7,17 @@ class Public::PostsController < ApplicationController
 
   def create
     @post = current_user.posts.new(post_params)
-    # 改行コード込みで送られてくるので改行コードで分割して文字列の配列にする
-    if params[:youtube_url]
-      @post.build_youtube_url(path: params[:youtube_url])
-    end
-
+    
     # 画像か動画のどちらかが添付されている
-    if @post.images.attached? || @post.youtube_url
+    
+      @post.build_youtube_url(path: params[:youtube_url]) if params[:youtube_url].present?
       if @post.save
-        redirect_to user_path(@post.user), notice: "投稿が保存されました。"
+        redirect_to user_path(@post.user), notice: "投稿されました。"
       else
+        flash.now[:notice] = "投稿にに失敗しました。"
         render :new
       end
-    else
-      render :new
-    end
+    
   end
 
   def edit

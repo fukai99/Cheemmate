@@ -1,18 +1,19 @@
 <%= form_with model: @post do |f| %>
-  <h4>コメント</h4>
+  <h4><span style="color: red;">（必須）</span>コメント</h4>
   <%= f.text_area :content, rows: 2, style: "width: 30%;" %>
+  <h4 style="text-align: center; color: red;">画像・Youtubeどちらか片方は必須</h4>
 
-	<h4>画像</h4>
+  <h4>画像</h4>
   <%= f.file_field :images, multiple: true, accept: "image/*" %>
 
   <h4>Youtube URL(※複数の動画をつけたい場合は改行して入力してください)</h4>
   <%= text_area_tag :youtube_url, nil, rows: 5, cols: 50 %>
 
-  <h4>ジャンル</h4>
+  <h4><span style="color: red;">（必須）</span>ジャンル</h4>
   <div class="field">
     <%= f.label :genre_id, 'ジャンル' %>
     <%= f.collection_select :genre_id, Genre.all, :id, :name, { prompt: '--選択してください--' } %>
   </div>
 
-  <%= f.submit '投稿',class: "btn btn-info" %>
+  <%= f.submit '投稿', class: "btn btn-info" %>
 <% end %>

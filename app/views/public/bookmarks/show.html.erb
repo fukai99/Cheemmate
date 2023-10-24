@@ -60,7 +60,7 @@
               </div>
 
               <!-- 編集と削除ボタン -->
-              <% if current_user == bookmark.user %>
+              <% if current_user == bookmark.post.user %>
                 <div class="float-right">
                   <div class="btn-group">
                     <%= link_to "編集", edit_post_path(bookmark.post), class: "btn btn-success" %>

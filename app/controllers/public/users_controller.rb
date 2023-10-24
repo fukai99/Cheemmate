@@ -17,7 +17,7 @@ class Public::UsersController < ApplicationController
 
   def edit
     is_matching_login_user
-     @user = User.find(params[:id])
+      @user = User.find(params[:id])
   end
 
   def update
@@ -27,6 +27,7 @@ class Public::UsersController < ApplicationController
       flash[:notice] = "変更しました."
       redirect_to user_path(@user)
     else
+      flash.now[:notice] = "変更に失敗しました。"
       render :edit
     end
   end
@@ -34,7 +35,7 @@ class Public::UsersController < ApplicationController
   private
 
   def user_params
-    params.require(:user).permit(:disply_name, :avatar, :is_member)
+    params.require(:user).permit(:disply_name, :avatar, :is_member, :family_relationship)
   end
 
   def is_matching_login_user

@@ -19,6 +19,6 @@ hatsu_post = Post.find_or_create_by!(content: "初投稿です") do |post|
 end
 
 YoutubeUrl.find_or_create_by!(path: "OJmSwcww-pw", post_id: hatsu_post.id)
-YoutubeUrl.find_or_create_by!(path: "iBDPW82ouCY", post_id: hatsu_post.id)
+# YoutubeUrl.find_or_create_by!(path: "iBDPW82ouCY", post_id: hatsu_post.id)
 
 puts "データの作成が完了しました"

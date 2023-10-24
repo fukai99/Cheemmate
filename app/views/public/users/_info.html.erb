@@ -10,6 +10,10 @@
       <th> &nbsp;&nbsp; </th>
       <th><%= user.is_member ? '生徒' : '家族' %></th>
     </tr>
+    <tr>
+      <th>詳細</th>
+      <th><%= user.family_relationship %></th>
+    </tr>
   </tbody>
 </table>
 <% if current_user == user && !user.guest_user? %>

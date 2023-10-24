@@ -11,13 +11,12 @@ class Admin::PostsController < ApplicationController
   end
 
   def show
-    #@user = User.find(params[:id])
     @post = Post.find(params[:id])
   end
 
   def destroy
     post = Post.find(params[:id])
     post.destroy
-    redirect_back fallback_location: admin_posts_path
+    redirect_to request.referer
   end
 end
