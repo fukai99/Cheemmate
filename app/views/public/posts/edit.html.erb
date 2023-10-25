@@ -9,13 +9,13 @@
     </div>
 
     <div class="mt-3 mb-3">
-      <h5>新しい画像をアップロード</h5><br>
+      <h5>画像のアップロード（添付したい画像を全て選択してください）</h5><br>
       <%= f.file_field :images, multiple: true, accept: "image/*" %>
     </div>
 
     <% if @post.images.present? %>
       <div class="mt-3">
-        <h5>現在登録されている画像（削除するものはチェックしてください）</h5><br>
+        <h5>削除のみの方はこちら<br>削除するものはチェックしてください</h5><br>
         <% @post.images.each do |image| %>
           <div class="col-md-2">
             <%= image_tag image, size: "100x100" %>

@@ -10,7 +10,7 @@
       <% @users.each do |user| %>
         <tr>
           <td><%= image_tag user.get_avatar(70, 70) %></td>
-          <td><%= link_to user.display_name, user_path(user) %></td>
+          <td><%= link_to user.disply_name, user_path(user) %></td>
           <td><%= user.is_member ? '生徒' : '家族' %></td>
         </tr>
       <% end %>

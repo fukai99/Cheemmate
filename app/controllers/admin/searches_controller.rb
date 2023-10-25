@@ -6,6 +6,7 @@ class Admin::SearchesController < ApplicationController
     @word = params[:word]
 
     if @word.blank?
+      flash[:notice] = "入力が必要です。"
       redirect_to request.referer
     else
 

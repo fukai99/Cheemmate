@@ -10,9 +10,7 @@ class Public::YoutubeUrlsController < ApplicationController
 
   def update
     @post = Post.find(params[:post_id])
-    
-      
-    
+
     @youtube_url = @post.youtube_url || @post.build_youtube_url
     if @youtube_url.update(youtube_urls_params)
       flash[:notice] = "動画を変更しました。"

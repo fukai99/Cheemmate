@@ -15,7 +15,7 @@ module Cheemmate
 
     html_tag.html_safe
 
-    config.active_storage.replace_on_assign_to_many = false
+
     end
 
     # Configuration for the application, engines, and railties goes here.
