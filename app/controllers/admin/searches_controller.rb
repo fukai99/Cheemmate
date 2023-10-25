@@ -10,9 +10,9 @@ class Admin::SearchesController < ApplicationController
     else
 
       if @range == "User"
-        @users = User.looks(params[:search], @word, true)
+        @users = User.looks(params[:search], @word, false)
       else
-        @posts = Post.looks(params[:search], @word, false)
+        @posts = Post.looks(@word)
       end
     end
   end

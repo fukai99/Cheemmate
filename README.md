@@ -28,5 +28,7 @@
 - IDE：Cloud9
 ​
 ## 使用素材
-- フリーイラスト素材として以下を使用
-- toffu(https://toffu.co/collections/free-resources)
+- フリー素材として以下を使用
+- Fontawesom（https://fontawesome.com/）
+- SEA TRIP(https://www.youtube.com/feed/subscriptions)
+- photoc(https://www.photock.jp/)

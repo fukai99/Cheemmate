@@ -7,9 +7,9 @@ class Public::PostsController < ApplicationController
 
   def create
     @post = current_user.posts.new(post_params)
-    
+
     # 画像か動画のどちらかが添付されている
-    
+
       @post.build_youtube_url(path: params[:youtube_url]) if params[:youtube_url].present?
       if @post.save
         redirect_to user_path(@post.user), notice: "投稿されました。"
@@ -17,7 +17,7 @@ class Public::PostsController < ApplicationController
         flash.now[:notice] = "投稿にに失敗しました。"
         render :new
       end
-    
+
   end
 
   def edit
@@ -27,7 +27,7 @@ class Public::PostsController < ApplicationController
   def update
     @post = Post.find(params[:id])
 
-    # 新しい画像を追加
+   # 新しい画像を追加
     if params[:post][:new_images].present?
       @post.images.attach(params[:post][:new_images])
     end

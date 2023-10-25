@@ -29,7 +29,7 @@
         <th class="col-2">ユーザー</th>
         <th class="col-2">ジャンル</th>
         <th class="col-1">コメント</th>
-        <th class="colspan-5">投稿</th>
+        <th class="colspan-7">投稿</th>
       </tr>
 
       <% @posts.each do |post| %>
@@ -54,18 +54,20 @@
           </td>
           <td>
             <!-- 投稿に添付されたYouTube動画の埋め込み -->
-            <% post.youtube_urls.each do |youtube_url| %>
-              <iframe width="224" height="126" src="https://www.youtube.com/embed/<%= youtube_url.path %>" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
-            <% end %>
-          </td>
-          <td>
-            <%= link_to admin_post_path(post.id) do %>
-              <i class="fa-solid fa-arrow-right"></i>
+            <% if post.youtube_url.present? %>
+              <% post.youtube_url.path.split(/\R/).each do |url| %>
+                <iframe width="224" height="126" src="https://www.youtube.com/embed/<%= url.last(11) %>" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+              <% end %>
             <% end %>
           </td>
           <td>
             <!-- 投稿の削除ボタン -->
             <%= link_to "削除", admin_post_path(post), method: :delete, class: "btn btn-danger float-right", data: { confirm: "削除しますか？" } %>
+          </td>
+          <td>
+            <%= link_to admin_post_path(post.id) do %>
+              <i class="fa-solid fa-arrow-right"></i>
+            <% end %>
           </td>
         </tr>
       <% end %>

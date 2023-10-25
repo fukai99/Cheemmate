@@ -13,8 +13,9 @@ module Cheemmate
 
     config.action_view.field_error_proc = Proc.new do |html_tag, instance|
 
-      html_tag.html_safe
+    html_tag.html_safe
 
+    config.active_storage.replace_on_assign_to_many = false
     end
 
     # Configuration for the application, engines, and railties goes here.
