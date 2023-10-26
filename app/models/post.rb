@@ -6,12 +6,12 @@ class Post < ApplicationRecord
   has_many :bookmarks, dependent: :destroy
   has_many :favorites, dependent: :destroy
   has_many_attached :images, dependent: :destroy
-  
+
   validates :content, presence: true
-  
+
   validates :images, presence: true, if: -> { youtube_url.blank? }
   validates :youtube_url, presence: true, if: -> { images.blank? }
-  
+
   def bookmarked_by?(user)
     bookmarks.exists?(user_id: user.id)
   end

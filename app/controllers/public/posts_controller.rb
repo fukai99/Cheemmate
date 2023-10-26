@@ -10,14 +10,13 @@ class Public::PostsController < ApplicationController
 
     # 画像か動画のどちらかが添付されている
 
-      @post.build_youtube_url(path: params[:youtube_url]) if params[:youtube_url].present?
+    @post.build_youtube_url(path: params[:youtube_url]) if params[:youtube_url].present?
       if @post.save
         redirect_to user_path(@post.user), notice: "投稿されました。"
       else
         flash.now[:notice] = "投稿にに失敗しました。"
         render :new
       end
-
   end
 
   def edit
@@ -52,7 +51,7 @@ class Public::PostsController < ApplicationController
   def destroy
     post = Post.find(params[:id])
     post.destroy
-    redirect_to user_path(current_user)
+    redirect_to request.referer
   end
 
   def index

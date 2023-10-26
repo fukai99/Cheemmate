@@ -21,7 +21,7 @@
       <% @posts.each do |post| %>
         <tr>
           <td style="width: 5%;"><%= post.created_at.strftime("%Y/%m/%d") %></td>
-          <td style="width: 10%;">ジャンル名:<%= post.genre.name %></td>
+          <td style="width: 10%;">ジャンル名:<%= post.genre.name %><br><br><%= post.content %></td>
           
           <!-- 写真 -->
           <td style="width: 40%;">

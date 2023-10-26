@@ -35,10 +35,9 @@ class User < ApplicationRecord
   end
 
    # 検索方法分岐
-  def self.looks(search, word, is_admin)
+  def self.looks(word, is_admin)
     if is_admin
-      @users = where("disply_name LIKE ?", "%#{word}%")
-                .or(where("first_name LIKE ?", "%#{word}%"))
+      @users = where("first_name LIKE ?", "%#{word}%")
                 .or(where("family_name LIKE ?", "%#{word}%"))
     else
       @users = where("disply_name LIKE ?", "%#{word}%")
