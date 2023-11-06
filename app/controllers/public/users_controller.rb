@@ -1,6 +1,7 @@
 class Public::UsersController < ApplicationController
   before_action :authenticate_user!
   before_action :ensure_guest_user, only: [:edit]
+  before_action :is_matching_login_user, only: [:edit, :update]
 
   def show
     @user = User.find(params[:id])
@@ -16,13 +17,12 @@ class Public::UsersController < ApplicationController
   end
 
   def edit
-    is_matching_login_user
-      @user = User.find(params[:id])
+    @user = User.find(params[:id])
   end
 
   def update
-    is_matching_login_user
-      @user = User.find(params[:id])
+    @user = User.find(params[:id])
+    
     if @user.update(user_params)
       flash[:notice] = "変更しました."
       redirect_to user_path(@user)

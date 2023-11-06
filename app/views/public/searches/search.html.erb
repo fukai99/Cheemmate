@@ -27,7 +27,7 @@
           <td style="width: 40%;">
             <% if post.images.attached? %>
               <% post.images.each do |image| %>
-                <%= image_tag image, size: "150x150", style: "margin-bottom: 10px;" %>
+                <%= image_tag image, class: "aspect-ratio" %>
               <% end %>
             <% end %>
           </td>

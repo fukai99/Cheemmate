@@ -7,3 +7,21 @@
 .searches_form {
   text-align: right;
 }
+
+.index-img {
+  width: 150px;
+  height: 150px;
+  object-fit: cover;
+}
+
+.show-img{
+    width: 150px;
+    height: 150px;
+    object-fit: contain;
+  }
+  
+  .aspect-ratio {
+  width: 150px;
+  height: 150px;
+  object-fit: cover;
+}
