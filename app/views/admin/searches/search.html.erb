@@ -48,7 +48,7 @@
             <!-- 投稿に添付された画像の表示 -->
             <% if post.images.attached? %>
               <% post.images.each do |image| %>
-                <%= image_tag image, size: "150x150" %>
+                <%= image_tag image, class: "aspect-ratio" %>
               <% end %>
             <% end %>
           </td>

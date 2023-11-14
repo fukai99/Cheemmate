@@ -24,7 +24,7 @@
                 <% if bookmark.post.images.attached? %>
                   <% bookmark.post.images.each do |image| %>
                     <div class="mr-3 mb-3">
-                      <%= image_tag image, size: "150x150" %>
+                      <%= image_tag image, class: "show-img" %>
                     </div>
                   <% end %>
                 <% end %>

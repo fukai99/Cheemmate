@@ -11,7 +11,7 @@
 .index-img {
   width: 150px;
   height: 150px;
-  object-fit: cover;
+  object-fit: contain;
 }
 
 .show-img{
@@ -19,9 +19,9 @@
     height: 150px;
     object-fit: contain;
   }
-  
+
   .aspect-ratio {
   width: 150px;
   height: 150px;
-  object-fit: cover;
+  object-fit: contain;
 }
