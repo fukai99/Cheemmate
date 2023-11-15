@@ -28,5 +28,5 @@
 ## 使用素材
 - フリー素材として以下を使用
 - Fontawesom（https://fontawesome.com/）
-- SEA TRIP(https://www.youtube.com/feed/subscriptions)
+- Cu TATSUYA Dance Channel 振付師Cュタツヤ(https://www.youtube.com/@cutatsuya/featured)
 - photock(https://www.photock.jp/)

@@ -14,7 +14,7 @@ class Public::PostsController < ApplicationController
       if @post.save
         redirect_to user_path(@post.user), notice: "投稿されました。"
       else
-        flash.now[:notice] = "投稿にに失敗しました。"
+        flash.now[:notice] = "投稿にに失敗しました。画像または動画、ジャンル、コメントの入力が必須です。ご確認ください。"
         render :new
       end
   end
